@@ -167,8 +167,6 @@ public class DomeController : MonoBehaviour
 		{
 			fpsText.gameObject.SetActive(false);
 		}
-		else
-			Debug.LogError(FPSTextMissingWarning);
 
 		// Save initial pitch and roll.
 		m_initialWorldCameraPitch = worldCameraPitch;
