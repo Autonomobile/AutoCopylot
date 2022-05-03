@@ -7,8 +7,6 @@ using UnityEngine;
 public class GenerateRoadEditor : Editor
 {
 
-    [Header("Spline Generator")]
-
     private GenerateRoad script;
 
     private void OnEnable()

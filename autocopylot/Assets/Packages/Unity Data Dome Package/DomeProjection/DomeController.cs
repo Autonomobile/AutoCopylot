@@ -116,6 +116,7 @@ public class DomeController : MonoBehaviour
 
 	[Tooltip("FPS Display Field")]
 	public Text fpsText;
+	public bool doLoadSettingsFromFile = false;
 
 	//----------------------------------------------------------------------------------------------------
 	// PUBLIC
@@ -172,22 +173,25 @@ public class DomeController : MonoBehaviour
 		m_initialWorldCameraPitch = worldCameraPitch;
 		m_initialWorldCameraRoll = worldCameraRoll;
 
-		// Load settings (if available).
-		bool haveProductSettings = File.Exists(ProductSettingsFilename);
-		bool haveDefaultSettings = File.Exists(DefaultSettingsFilename);
-		if (!haveDefaultSettings)
+		if (doLoadSettingsFromFile)
 		{
-			SaveDefaultSettings();
-		}
-		if (haveProductSettings)
-		{
-			LoadProductSettings();
-		}
-		else
-		{
-			if (haveDefaultSettings)
-				LoadDefaultSettings();
-			SaveProductSettings();
+			// Load settings (if available).
+			bool haveProductSettings = File.Exists(ProductSettingsFilename);
+			bool haveDefaultSettings = File.Exists(DefaultSettingsFilename);
+			if (!haveDefaultSettings)
+			{
+				SaveDefaultSettings();
+			}
+			if (haveProductSettings)
+			{
+				LoadProductSettings();
+			}
+			else
+			{
+				if (haveDefaultSettings)
+					LoadDefaultSettings();
+				SaveProductSettings();
+			}
 		}
 	}
 

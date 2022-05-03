@@ -82,10 +82,11 @@ public class GenerateRoad : MonoBehaviour
     public static void LoadPath(PathCreator spline, string path)
     {
         string[] lines = System.IO.File.ReadAllLines(path);
-        Vector3[] waypoints = new Vector3[lines.Length];
-        for (int i = 0; i < lines.Length; i++)
+        int length = lines.Length / 3;
+        Vector3[] waypoints = new Vector3[length];
+        for (int i = 0; i < length; i++)
         {
-            string[] line = lines[i].Split(' ');
+            string[] line = lines[i * 3].Split(' ');
             waypoints[i] = new Vector3(float.Parse(line[0]), float.Parse(line[1]), float.Parse(line[2]));
         }
         ApplyPath(spline, waypoints);
@@ -239,10 +240,4 @@ public class GenerateRoad : MonoBehaviour
         Material[] materials = Resources.LoadAll<Material>(RoadMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
-
-    public static string[] GetAvailablePaths(string folder, string filter)
-    {
-        return Directory.GetFiles(folder, filter);
-    }
-
 }

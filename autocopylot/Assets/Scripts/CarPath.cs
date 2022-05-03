@@ -9,11 +9,16 @@ public class CarPath : MonoBehaviour
     public PathCreator CarSpline;
 
     public float RandomDist = 0.5f;
-    float t = 0.0f;
+    public float speed = 1.0f;
 
-    void Start()
+    float t = 0.0f;
+    float timesteps = 0.033f;
+
+    
+    public void Start()
     {
         CreateCarSpline();
+        UpdateTransform(t);
     }
 
     public void CreateCarSpline()
@@ -32,15 +37,16 @@ public class CarPath : MonoBehaviour
 
     public void UpdateTransform(float t)
     {
-        transform.position = CarSpline.path.GetPointAtTime(t);
-        transform.localRotation = CarSpline.path.GetRotation(t) * Quaternion.Euler(0.0f, 90.0f, 0.0f);
+        Vector3 v1 = CarSpline.path.GetPointAtDistance(t * speed - 0.3f);
+        Vector3 v2 = CarSpline.path.GetPointAtDistance(t * speed);
 
-        // transform.SetPositionAndRotation(pos, rot);
+        transform.position = (v1 + v2) / 2.0f;
+        transform.rotation = Quaternion.LookRotation(v2 - v1);
     }
 
     void Update()
     {
         UpdateTransform(t);
-        t += 0.001f;
+        t += timesteps;
     }
 }
