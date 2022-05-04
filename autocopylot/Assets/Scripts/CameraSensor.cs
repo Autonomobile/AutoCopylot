@@ -6,7 +6,6 @@ using System;
 
 public class CameraSensor : MonoBehaviour
 {
-    public bool doSave = true;
     public RenderTexture renderTexture;
     Texture2D tex;
 
