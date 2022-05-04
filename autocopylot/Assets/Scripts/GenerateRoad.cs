@@ -24,7 +24,6 @@ public class GenerateRoad : MonoBehaviour
 
 
     [Header("Road Builder")]
-    public Material roadMaterial;
     public Material undersideMaterial;
     public float roadWidth = 0.8f;
     public float thickness = 0.01f;
@@ -228,7 +227,7 @@ public class GenerateRoad : MonoBehaviour
 
     void AssignMaterials()
     {
-        if (roadMaterial != null && undersideMaterial != null)
+        if (undersideMaterial != null)
         {
             meshRenderer.sharedMaterials = new Material[] { GetRandomMaterial(), undersideMaterial, undersideMaterial };
             meshRenderer.sharedMaterials[0].mainTextureScale = new Vector3(1, RoadSpline.path.length);

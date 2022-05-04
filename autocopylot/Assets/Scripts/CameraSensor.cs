@@ -8,17 +8,21 @@ public class CameraSensor : MonoBehaviour
 {
     public RenderTexture renderTexture;
     Texture2D tex;
+    int texwidth;
+    int texheight;
 
+    void Start()
+    {
+        texwidth = renderTexture.width;
+        texheight = renderTexture.height;
+        tex = new Texture2D(texwidth - 80, texheight - 80, TextureFormat.RGB24, false);
+    }
 
     Texture2D GetImage()
     {
         var currentRT = RenderTexture.active;
         RenderTexture.active = renderTexture;
 
-        int texwidth = renderTexture.width;
-        int texheight = renderTexture.height;
-
-        tex = new Texture2D(texwidth - 80, texheight - 80, TextureFormat.RGB24, false);
         tex.ReadPixels(new Rect(40, 40, texwidth - 40, texheight - 40), 0, 0);
 
         RenderTexture.active = currentRT;
