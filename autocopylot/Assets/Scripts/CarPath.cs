@@ -20,8 +20,6 @@ public class CarData
 
 public class CarPath : MonoBehaviour
 {
-    static string saveFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/";
-    static System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
     public PathCreator RoadSpline;
     public PathCreator TrajectorySpline;
@@ -68,6 +66,7 @@ public class CarPath : MonoBehaviour
 
     public float GetSteering()
     {
+        // TODO: Find a policy
         // create a steering value to get to the optimal trajectorySpline point
 
         // Vector3 v1 = CarSpline.path.GetPointAtDistance(t * speed - 0.3f);
@@ -87,29 +86,23 @@ public class CarPath : MonoBehaviour
 
     public float GetThrottle()
     {
+        // TODO: Find a policy
         return 0.0f;
     }
 
-    public void SaveJson()
+    public void Step()
+    {
+        t += timesteps;
+        UpdateTransform(t);
+    }
+
+    public void SaveJson(string path)
     {
         float steering = GetSteering();
         float throttle = GetThrottle();
 
 
         string json = JsonUtility.ToJson(new CarData(steering, speed, throttle));
-        System.IO.File.WriteAllText(saveFolder + GetCurrentTime() + ".json", json);
-    }
-
-    void Update()
-    {
-        UpdateTransform(t);
-        SaveJson();
-
-        t += timesteps;
-    }
-    
-    public static string GetCurrentTime()
-    {
-        return (System.DateTime.UtcNow - epochStart).TotalSeconds.ToString().Replace(",", ".");
+        System.IO.File.WriteAllText(path, json);
     }
 }

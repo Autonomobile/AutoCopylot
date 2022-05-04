@@ -6,9 +6,6 @@ using System;
 
 public class CameraSensor : MonoBehaviour
 {
-    static string saveFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/";
-    static System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
-
     public bool doSave = true;
     public RenderTexture renderTexture;
     Texture2D tex;
@@ -35,11 +32,5 @@ public class CameraSensor : MonoBehaviour
         Texture2D img = GetImage();
         byte[] bytes = img.EncodeToPNG();
         System.IO.File.WriteAllBytes(path, bytes);
-    }
-
-
-    public static string GetCurrentTime()
-    {
-        return (System.DateTime.UtcNow - epochStart).TotalSeconds.ToString().Replace(",", ".");
     }
 }
