@@ -37,11 +37,6 @@ public class CameraSensor : MonoBehaviour
         System.IO.File.WriteAllBytes(path, bytes);
     }
 
-    public void Update()
-    {
-        if (doSave)
-            SaveImage(saveFolder + GetCurrentTime() + ".png");
-    }
 
     public static string GetCurrentTime()
     {
