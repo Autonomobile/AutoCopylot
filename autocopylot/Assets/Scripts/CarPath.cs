@@ -37,8 +37,11 @@ public class CarPath : MonoBehaviour
     public float maxSpeed = 2.0f;
 
     private float t = 0.0f;
+    private float dt = 0.0f;
     private float prevDist = 0.0f;
     private float speed = 0.0f;
+
+    private Vector3 posMask = new Vector3(1.0f, 0.0f, 1.0f);
 
 
     public void Start()
@@ -65,7 +68,7 @@ public class CarPath : MonoBehaviour
 
     public void UpdateTransform(float t)
     {   
-        float dt = t - this.t;
+        dt = t - this.t;
         float dist = prevDist + dt * speed;
 
         Vector3 v1 = CarSpline.path.GetPointAtDistance(dist - 0.3f);
@@ -85,20 +88,27 @@ public class CarPath : MonoBehaviour
     {
         float dist = t * speed;
 
-        Vector3 pos = CarSpline.path.GetPointAtDistance(dist);
-        Vector3 rot = CarSpline.path.GetDirectionAtDistance(dist);
+        Vector3 pos = transform.position;
+        Vector3 rot = transform.forward;
+        // Vector3 rot = CarSpline.path.GetDirectionAtDistance(dist);
 
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
         Vector3 targetRot = TrajectorySpline.path.GetDirectionAtDistance(aheadDist);
 
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(pos, 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(targetPos, 0.1f);
+
         Quaternion InverseRot = Quaternion.Inverse(Quaternion.LookRotation(rot));
         Vector3 relativeTargetPos = InverseRot * (pos - targetPos);
 
         float deltaAngle = Mathf.Clamp(Vector3.SignedAngle(rot, targetRot, Vector3.up) / maxAngle, -1.0f, 1.0f);
+        // float deltaAngle = 0.0f;
         float xDist = -Mathf.Clamp(relativeTargetPos.x / roadWidth, -1.0f, 1.0f);
 
-        float steering = deltaAngle * 0.25f + xDist * 0.75f;
+        float steering = Mathf.Clamp(deltaAngle * 2.0f + xDist * 0.5f, -1.0f, 1.0f);;
         return steering;
     }
 
@@ -141,6 +151,8 @@ public class CarPath : MonoBehaviour
 
         Gizmos.color = Color.red;
         Vector3 endPos = pos + rot * steeringVect * 0.2f;
+        Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
+        Vector3 target = pos + dt * speed * transform.forward;
         Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
     }
 }

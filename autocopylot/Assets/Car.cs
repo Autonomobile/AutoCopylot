@@ -44,6 +44,7 @@ public class Car : MonoBehaviour
         if (counter > RandomizeEvery)
         {
             Randomize();
+            carPath.UpdateTransform(t);
             counter = 0.0f;
         }
         else
