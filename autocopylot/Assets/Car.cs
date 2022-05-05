@@ -22,6 +22,7 @@ public class Car : MonoBehaviour
     CarPath carPath;
     CameraSensor cameraSensor;
     float t = 0.0f;
+    float counter = 0.0f;
 
     void Start()
     {
@@ -39,12 +40,11 @@ public class Car : MonoBehaviour
 
     void Update()
     {
-        t += Time.deltaTime;
-
-        if (t > RandomizeEvery)
+        counter += Time.deltaTime;
+        if (counter > RandomizeEvery)
         {
             Randomize();
-            t = 0.0f;
+            counter = 0.0f;
         }
         else
         {

@@ -102,10 +102,6 @@ public class CarPath : MonoBehaviour
         return new float[3];
     }
 
-    public void Step()
-    {
-    }
-
     public void SaveJson(string path)
     {
         float steering = GetSteering();
