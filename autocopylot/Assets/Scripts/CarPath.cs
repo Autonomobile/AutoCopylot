@@ -39,7 +39,7 @@ public class CarPath : MonoBehaviour
     private float t = 0.0f;
     private float dt = 0.0f;
     private float prevDist = 0.0f;
-    private float speed = 0.0f;
+    public float speed = 0.0f;
 
     private Vector3 posMask = new Vector3(1.0f, 0.0f, 1.0f);
 
@@ -90,25 +90,19 @@ public class CarPath : MonoBehaviour
 
         Vector3 pos = transform.position;
         Vector3 rot = transform.forward;
-        // Vector3 rot = CarSpline.path.GetDirectionAtDistance(dist);
+        // Vector3 splinePos = TrajectorySpline.path.GetPointAtDistance(dist);
 
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
-        Vector3 targetRot = TrajectorySpline.path.GetDirectionAtDistance(aheadDist);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(pos, 0.1f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(targetPos, 0.1f);
-
-        Quaternion InverseRot = Quaternion.Inverse(Quaternion.LookRotation(rot));
+        
+        Quaternion InverseRot = Quaternion.Inverse(transform.rotation);
         Vector3 relativeTargetPos = InverseRot * (pos - targetPos);
+        // Vector3 relativeCenterPos = InverseRot * (pos - targetPos);
 
-        float deltaAngle = Mathf.Clamp(Vector3.SignedAngle(rot, targetRot, Vector3.up) / maxAngle, -1.0f, 1.0f);
-        // float deltaAngle = 0.0f;
-        float xDist = -Mathf.Clamp(relativeTargetPos.x / roadWidth, -1.0f, 1.0f);
+        float targetOff = -Mathf.Clamp(relativeTargetPos.x / roadWidth, -1.0f, 1.0f);
+        // float lateralOff = Mathf.Clamp(relativeCenterPos.x / roadWidth, -1.0f, 1.0f);
 
-        float steering = Mathf.Clamp(deltaAngle * 2.0f + xDist * 0.5f, -1.0f, 1.0f);;
+        float steering = Mathf.Clamp(targetOff, -1.0f, 1.0f);;
         return steering;
     }
 
@@ -142,17 +136,20 @@ public class CarPath : MonoBehaviour
 
         Vector3 steeringVect = new Vector3(GetSteering(), 0, 0);
 
-        float dist = t * speed;
         Vector3 pos = transform.position;
         Quaternion rot = transform.rotation;
-        // Vector3 pos = CarSpline.path.GetPointAtDistance(dist);
-        // Vector3 rot = CarSpline.path.GetDirectionAtDistance(dist);
-        // Quaternion rotQ = Quaternion.LookRotation(rot);
+        
+        float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
+        Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
+        
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(pos, 0.1f);
 
         Gizmos.color = Color.red;
+        Gizmos.DrawSphere(targetPos, 0.1f);
         Vector3 endPos = pos + rot * steeringVect * 0.2f;
         Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
-        Vector3 target = pos + dt * speed * transform.forward;
-        Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
+        // Vector3 target = pos + dt * speed * transform.forward;
+        // Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
     }
 }
