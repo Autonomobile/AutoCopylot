@@ -40,7 +40,7 @@ public class Car : MonoBehaviour
 
     void Update()
     {
-        counter += Time.deltaTime;
+        counter += timesteps;
         if (counter > RandomizeEvery)
         {
             Randomize();
