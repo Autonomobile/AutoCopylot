@@ -12,28 +12,52 @@ public class Car : MonoBehaviour
     static string saveFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/";
     static System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
-    public bool doSave = true;
+    public GenerateEnv generateEnv;
+    public GenerateRoad generateRoad;
+
+    public bool DoSave = true;
+    public float RandomizeEvery = 20.0f;
+    public float timesteps = 0.033f;
 
     CarPath carPath;
     CameraSensor cameraSensor;
+    float t = 0.0f;
 
     void Start()
     {
         carPath = GetComponent<CarPath>();
         cameraSensor = GetComponent<CameraSensor>();
+        Randomize();
+    }
+
+    public void Randomize()
+    {
+        generateRoad.Start();
+        carPath.Start();
+        generateEnv.Start();
     }
 
     void Update()
     {
-        carPath.Step();
+        t += Time.deltaTime;
 
-        if (doSave)
+        if (t > RandomizeEvery)
         {
-            string curTime = GetCurrentTime();
-            cameraSensor.SaveImage(saveFolder + curTime + ".png");
-            carPath.SaveJson(saveFolder + curTime + ".json");
+            Randomize();
+            t = 0.0f;
         }
+        else
+        {
+            t += timesteps;
+            carPath.UpdateTransform(t);
 
+            if (DoSave)
+            {
+                string curTime = GetCurrentTime();
+                cameraSensor.SaveImage(saveFolder + curTime + ".png");
+                carPath.SaveJson(saveFolder + curTime + ".json");
+            }
+        }
     }
 
     public static string GetCurrentTime()

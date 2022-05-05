@@ -18,6 +18,9 @@ public class GenerateRoad : MonoBehaviour
 
 
     [Header("Spline Loader")]
+    public bool RandomTrack = false;
+    public bool LoadTrack = false;
+    public bool RandomMaterial = false;
     public int NumPoints = 10;
     public float MinDist = 3.0f;
     public string Name = "spline.txt";
@@ -25,7 +28,7 @@ public class GenerateRoad : MonoBehaviour
 
     [Header("Road Builder")]
     public Material undersideMaterial;
-    public float roadWidth = 0.8f;
+    public float roadWidth = 0.4f;
     public float thickness = 0.01f;
 
     Mesh RoadMesh;
@@ -40,6 +43,18 @@ public class GenerateRoad : MonoBehaviour
     {
         if (RoadSpline is null || TrajectorySpline is null)
             throw new ArgumentNullException("One of the splines is null.");
+
+        if (RandomTrack)
+        {
+            if (LoadTrack)
+                LoadRandomSplines();
+            else
+                GenerateSplines();
+        }
+        else
+        {
+            LoadSplines(Name);
+        }
     }
 
     public static void ApplyPath(PathCreator spline, Vector3[] waypoints)
@@ -91,8 +106,34 @@ public class GenerateRoad : MonoBehaviour
         ApplyPath(spline, waypoints);
     }
 
+    public void LoadSplines(string name)
+    {
+        LoadPath(RoadSpline, RoadSplineFolder + name);
+        LoadPath(TrajectorySpline, TrajectorySplineFolder + name);
+        PathUpdated();
+    }
 
-    public void PathUpdated()
+    public void LoadRandomSplines()
+    {
+        string[] roadPaths = Directory.GetFiles(RoadSplineFolder, "*.txt");
+        string[] trajPaths = Directory.GetFiles(RoadSplineFolder, "*.txt");
+
+        int roadIndex = UnityEngine.Random.Range(0, roadPaths.Length);
+        LoadPath(RoadSpline, roadPaths[roadIndex]);
+        LoadPath(TrajectorySpline, trajPaths[roadIndex]);
+        PathUpdated();
+    }
+
+    public void GenerateSplines()
+    {
+        Vector3[] points = RandomPoints();
+        GenerateRoad.ApplyPath(RoadSpline, points);
+        GenerateRoad.ApplyPath(TrajectorySpline, points);
+        PathUpdated();
+    }
+
+
+    private void PathUpdated()
     {
         if (RoadSpline != null)
         {
@@ -102,7 +143,7 @@ public class GenerateRoad : MonoBehaviour
         }
     }
 
-    public void BuildRoad()
+    private void BuildRoad()
     {
         VertexPath path = RoadSpline.path;
         Vector3[] verts = new Vector3[path.NumPoints * 8];
@@ -194,7 +235,7 @@ public class GenerateRoad : MonoBehaviour
         RoadMesh.SetTriangles(sideOfRoadTriangles, 2);
         RoadMesh.RecalculateBounds();
     }
-    void AssignMeshComponents()
+    private void AssignMeshComponents()
     {
 
         if (meshHolder == null)
@@ -225,9 +266,9 @@ public class GenerateRoad : MonoBehaviour
         meshFilter.sharedMesh = RoadMesh;
     }
 
-    void AssignMaterials()
+    private void AssignMaterials()
     {
-        if (undersideMaterial != null)
+        if (RandomMaterial && undersideMaterial != null)
         {
             meshRenderer.sharedMaterials = new Material[] { GetRandomMaterial(), undersideMaterial, undersideMaterial };
             meshRenderer.sharedMaterials[0].mainTextureScale = new Vector3(1, RoadSpline.path.length);
@@ -239,4 +280,6 @@ public class GenerateRoad : MonoBehaviour
         Material[] materials = Resources.LoadAll<Material>(RoadMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
+
+
 }

@@ -20,10 +20,7 @@ public class GenerateRoadEditor : Editor
 
         if (GUILayout.Button("generate road"))
         {
-            Vector3[] points = script.RandomPoints();
-            GenerateRoad.ApplyPath(script.RoadSpline, points);
-            GenerateRoad.ApplyPath(script.TrajectorySpline, points);
-            script.PathUpdated();
+            script.GenerateSplines();
         }
 
         if (GUILayout.Button("save path"))
@@ -34,12 +31,7 @@ public class GenerateRoadEditor : Editor
 
         if (GUILayout.Button("load path"))
         {
-            GenerateRoad.LoadPath(script.RoadSpline, script.TrajectorySplineFolder + script.Name);
-            GenerateRoad.LoadPath(script.TrajectorySpline, script.TrajectorySplineFolder + script.Name);
-            script.PathUpdated();
+            script.LoadSplines(script.Name);
         }
-        
-        if (GUILayout.Button("Update"))
-            script.PathUpdated();
     }
 }

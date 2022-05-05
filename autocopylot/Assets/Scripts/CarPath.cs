@@ -34,9 +34,8 @@ public class CarPath : MonoBehaviour
     public float maxAngle = 25.0f;
     public float roadWidth = 0.4f;
     public float speed = 1.0f;
-    public float timesteps = 0.033f;
 
-    float t = 0.0f;
+    private float t = 0.0f;
 
 
     public void Start()
@@ -45,7 +44,6 @@ public class CarPath : MonoBehaviour
             throw new ArgumentNullException("RoadSpline, TrajectorySpline or CarSpline is null");
 
         CreateCarSpline();
-        UpdateTransform(t);
     }
 
     public void CreateCarSpline()
@@ -59,11 +57,11 @@ public class CarPath : MonoBehaviour
         }
         BezierPath bezierPath = new BezierPath(points, true, PathSpace.xz);
         CarSpline.bezierPath = bezierPath;
-        Debug.Log("BezierPath created");
     }
 
     public void UpdateTransform(float t)
-    {
+    {   
+        this.t = t;
         float dist = t * speed;
         Vector3 v1 = CarSpline.path.GetPointAtDistance(dist - 0.3f);
         Vector3 v2 = CarSpline.path.GetPointAtDistance(dist);
@@ -106,8 +104,6 @@ public class CarPath : MonoBehaviour
 
     public void Step()
     {
-        t += timesteps;
-        UpdateTransform(t);
     }
 
     public void SaveJson(string path)
