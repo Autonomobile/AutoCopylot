@@ -32,7 +32,6 @@ public class CarPath : MonoBehaviour
     public float RandomDist = 0.5f;
     public float timeLookahead = 0.2f;
     public float maxAngle = 25.0f;
-    public float roadWidth = 0.4f;
     public float minSpeed = 1.0f;
     public float maxSpeed = 2.0f;
 
@@ -67,7 +66,7 @@ public class CarPath : MonoBehaviour
     }
 
     public void UpdateTransform(float t)
-    {   
+    {
         dt = t - this.t;
         float dist = prevDist + dt * speed;
 
@@ -80,7 +79,7 @@ public class CarPath : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(diff);
 
         speed = (v1.y + v2.y) / 2.0f;
-        prevDist = dist;;
+        prevDist = dist; ;
         this.t = t;
     }
 
@@ -90,19 +89,14 @@ public class CarPath : MonoBehaviour
 
         Vector3 pos = transform.position;
         Vector3 rot = transform.forward;
-        // Vector3 splinePos = TrajectorySpline.path.GetPointAtDistance(dist);
 
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
-        
+
         Quaternion InverseRot = Quaternion.Inverse(transform.rotation);
         Vector3 relativeTargetPos = InverseRot * (pos - targetPos);
-        // Vector3 relativeCenterPos = InverseRot * (pos - targetPos);
-
-        float targetOff = -Mathf.Clamp(relativeTargetPos.x / roadWidth, -1.0f, 1.0f);
-        // float lateralOff = Mathf.Clamp(relativeCenterPos.x / roadWidth, -1.0f, 1.0f);
-
-        float steering = Mathf.Clamp(targetOff, -1.0f, 1.0f);;
+        float angle = Vector3.SignedAngle(transform.forward * -1.0f, (pos - targetPos), Vector3.up);
+        float steering = Mathf.Clamp(angle / maxAngle, -1.0f, 1.0f);
         return steering;
     }
 
@@ -138,10 +132,10 @@ public class CarPath : MonoBehaviour
 
         Vector3 pos = transform.position;
         Quaternion rot = transform.rotation;
-        
+
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
-        
+
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(pos, 0.1f);
 

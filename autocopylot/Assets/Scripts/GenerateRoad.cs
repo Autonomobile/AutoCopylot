@@ -27,6 +27,7 @@ public class GenerateRoad : MonoBehaviour
 
 
     [Header("Road Builder")]
+    public bool DoBuildRoad = true;
     public Material undersideMaterial;
     public float roadWidth = 0.4f;
     public float thickness = 0.01f;
@@ -51,10 +52,8 @@ public class GenerateRoad : MonoBehaviour
             else
                 GenerateSplines();
         }
-        else
-        {
+        else if (LoadTrack)
             LoadSplines(Name);
-        }
     }
 
     public static void ApplyPath(PathCreator spline, Vector3[] waypoints)
@@ -135,7 +134,7 @@ public class GenerateRoad : MonoBehaviour
 
     private void PathUpdated()
     {
-        if (RoadSpline != null)
+        if (DoBuildRoad && RoadSpline != null)
         {
             AssignMeshComponents();
             AssignMaterials();

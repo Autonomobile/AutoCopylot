@@ -33,9 +33,12 @@ public class Car : MonoBehaviour
 
     public void Randomize()
     {
-        generateRoad.Start();
+        if (generateRoad != null)
+            generateRoad.Start();
+        if (generateEnv != null)
+            generateEnv.Start();
+
         carPath.Start();
-        generateEnv.Start();
     }
 
     void Update()
