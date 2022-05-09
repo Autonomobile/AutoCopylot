@@ -1236,7 +1236,6 @@ MonoBehaviour:
   RandomDist: 0.3
   timeLookahead: 0.5
   maxAngle: 25
-  roadWidth: 0.5
   minSpeed: 1
   maxSpeed: 2
   speed: 1
@@ -1247,15 +1246,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1835889720}
-  m_LocalRotation: {x: -0, y: -0.041557413, z: -0, w: -0.9991361}
-  m_LocalPosition: {x: -2.041, y: 0, z: 0.29700005}
+  m_LocalRotation: {x: -0, y: -0.6373154, z: -0, w: 0.77060306}
+  m_LocalPosition: {x: -1.885, y: 0, z: 0.129}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 959494871}
   - {fileID: 10227241}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 4.763, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 280.816, z: 0}
 --- !u!114 &1835889723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1418,7 +1417,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17272
+  m_Name: pb_Mesh16268
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

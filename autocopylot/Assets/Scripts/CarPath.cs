@@ -40,7 +40,8 @@ public class CarPath : MonoBehaviour
     private float prevDist = 0.0f;
     public float speed = 0.0f;
 
-    private Vector3 posMask = new Vector3(1.0f, 0.0f, 1.0f);
+    private Vector3[] zones;
+    private float[] averagedAngles;
 
 
     public void Start()
@@ -49,6 +50,7 @@ public class CarPath : MonoBehaviour
             throw new ArgumentNullException("RoadSpline, TrajectorySpline or CarSpline is null");
 
         CreateCarSpline();
+        CreateZone();
     }
 
     public void CreateCarSpline()
@@ -63,6 +65,47 @@ public class CarPath : MonoBehaviour
         }
         BezierPath bezierPath = new BezierPath(points, true, PathSpace.xyz);
         CarSpline.bezierPath = bezierPath;
+    }
+
+    public void CreateZone()
+    {
+        // Settings
+        float pointsEvery = 1.0f;
+        int pointsLookahead = 5;
+
+        int numPoints = (int)(RoadSpline.path.length / pointsEvery);
+        float[] angles = new float[numPoints];
+
+        Quaternion prevRot = RoadSpline.path.GetRotationAtDistance(0.0f);
+        for (int i = 0; i < zones.Length; i++)
+        {
+            float dist = i * pointsEvery;
+            Quaternion rot = RoadSpline.path.GetRotationAtDistance(dist);
+            angles[i] = Quaternion.Angle(prevRot, rot);
+            prevRot = rot;
+        }
+
+        averagedAngles = new float[numPoints];
+        for (int i = 0; i < averagedAngles.Length; i++)
+        {
+            float av = 0.0f;
+            for (int j = i; j < i + pointsLookahead; j++)
+                av += angles[j % averagedAngles.Length];
+            av /= pointsLookahead;
+            averagedAngles[i] = av;
+        }
+
+        zones = new Vector3[numPoints];
+        for (int i = 0; i < zones.Length; i++)
+        {
+            float av = averagedAngles[i];
+            // TODO
+            // if (av > maxAngle * 0.75f)
+            //     zones[i] = new Vector3(averagedAngles[i], 0.0f, 0.0f);
+        }
+
+        // float zonesDistWindow = 1.0f;
+        // // float zonesLookAhead = 2.0f;
     }
 
     public void UpdateTransform(float t)
@@ -92,11 +135,13 @@ public class CarPath : MonoBehaviour
 
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
+        Vector3 targetRot = TrajectorySpline.path.GetDirectionAtDistance(aheadDist);
 
         Quaternion InverseRot = Quaternion.Inverse(transform.rotation);
-        Vector3 relativeTargetPos = InverseRot * (pos - targetPos);
         float angle = Vector3.SignedAngle(transform.forward * -1.0f, (pos - targetPos), Vector3.up);
-        float steering = Mathf.Clamp(angle / maxAngle, -1.0f, 1.0f);
+        float directionAngle = Vector3.SignedAngle(transform.forward, targetRot, Vector3.up);
+
+        float steering = Mathf.Clamp((angle + directionAngle) / maxAngle, -1.0f, 1.0f);
         return steering;
     }
 
@@ -136,14 +181,21 @@ public class CarPath : MonoBehaviour
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(pos, 0.1f);
+        // Gizmos.color = Color.blue;
+        // Gizmos.DrawSphere(pos, 0.1f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(targetPos, 0.1f);
+
         Vector3 endPos = pos + rot * steeringVect * 0.2f;
         Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
-        // Vector3 target = pos + dt * speed * transform.forward;
-        // Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
+        Handles.DrawBezier(pos, targetPos, pos, targetPos, Color.green, null, 5.0f);
+
+
+        Gizmos.color = Color.blue;
+        for (int i = 0; i < averagedAngles.Length; i++)
+        {
+            Gizmos.DrawSphere(RoadSpline.path.GetPointAtDistance(i * 1.0f), averagedAngles[i] / 100.0f + 0.1f);
+        }
     }
 }
