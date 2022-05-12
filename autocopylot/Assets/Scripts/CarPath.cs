@@ -167,7 +167,7 @@ public class CarPath : MonoBehaviour
         float angle = Vector3.SignedAngle(transform.forward * -1.0f, (pos - targetPos), Vector3.up);
         float directionAngle = Vector3.SignedAngle(transform.forward, targetRot, Vector3.up);
 
-        float steering = Mathf.Clamp((angle + directionAngle) / (maxAngle * 2), -1.0f, 1.0f);
+        float steering = Mathf.Clamp((angle *0.75f + directionAngle * 0.25f) / maxAngle, -1.0f, 1.0f);
         return steering;
     }
 
