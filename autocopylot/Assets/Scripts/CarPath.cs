@@ -34,13 +34,20 @@ public class CarPath : MonoBehaviour
     public float maxAngle = 25.0f;
     public float minSpeed = 1.0f;
     public float maxSpeed = 2.0f;
+    public float speed = 0.0f;
+
+    [Header("Zone Parameters")]
+    public float pointsEvery = 0.25f;
+    public float distAverage = 0.5f;
+    public float distBrakeLookahead = 2.0f;
+    public float turnTh = 20f;
+    public bool doDrawTurns = true;
 
     private float t = 0.0f;
     private float dt = 0.0f;
     private float prevDist = 0.0f;
-    public float speed = 0.0f;
 
-    private Vector3[] zones;
+    private (float, Vector3)[] zones;
     private float[] averagedAngles;
 
 
@@ -69,43 +76,64 @@ public class CarPath : MonoBehaviour
 
     public void CreateZone()
     {
-        // Settings
-        float pointsEvery = 1.0f;
-        int pointsLookahead = 5;
+        // TODO: find a better way to approx angle
+        int pointsAverage = Mathf.CeilToInt(distAverage / pointsEvery);
+        int pointsLookahead = Mathf.CeilToInt(distBrakeLookahead / pointsEvery);
 
         int numPoints = (int)(RoadSpline.path.length / pointsEvery);
         float[] angles = new float[numPoints];
 
         Quaternion prevRot = RoadSpline.path.GetRotationAtDistance(0.0f);
-        for (int i = 0; i < zones.Length; i++)
+        for (int i = 0; i < numPoints; i++)
         {
             float dist = i * pointsEvery;
             Quaternion rot = RoadSpline.path.GetRotationAtDistance(dist);
-            angles[i] = Quaternion.Angle(prevRot, rot);
+            angles[i] = Quaternion.Angle(prevRot, rot) / pointsEvery;
             prevRot = rot;
         }
 
         averagedAngles = new float[numPoints];
-        for (int i = 0; i < averagedAngles.Length; i++)
+        for (int i = 0; i < numPoints; i++)
         {
             float av = 0.0f;
-            for (int j = i; j < i + pointsLookahead; j++)
-                av += angles[j % averagedAngles.Length];
-            av /= pointsLookahead;
+            for (int j = -pointsAverage; j < pointsAverage; j++)
+            {
+                if (j < 0)
+                    av += angles[(numPoints - j) % numPoints];
+                else
+                    av += angles[(i + j) % numPoints];
+            }
+            av /= (pointsAverage * 2 + 1);
             averagedAngles[i] = av;
         }
 
-        zones = new Vector3[numPoints];
-        for (int i = 0; i < zones.Length; i++)
+        zones = new (float, Vector3)[numPoints];
+        for (int i = 0; i < numPoints; i++)
         {
-            float av = averagedAngles[i];
-            // TODO
-            // if (av > maxAngle * 0.75f)
-            //     zones[i] = new Vector3(averagedAngles[i], 0.0f, 0.0f);
-        }
+            float dist = i * pointsEvery;
+            float time = dist / RoadSpline.path.length;
 
-        // float zonesDistWindow = 1.0f;
-        // // float zonesLookAhead = 2.0f;
+            float av = averagedAngles[i];
+
+            // look ahead
+            int j = 0;
+            for (; j < pointsLookahead; j++)
+            {
+                float aheadAngle = averagedAngles[(i + j) % numPoints];
+                if (aheadAngle > turnTh)
+                    break;
+            }
+
+            Vector3 zone;
+            if (j == pointsLookahead) // straight
+                zone = Vector3.right;
+            else if (j == 0) // turn
+                zone = Vector3.up;
+            else // brake 
+                zone = Vector3.forward;
+
+            zones[i] = (time, zone);
+        }
     }
 
     public void UpdateTransform(float t)
@@ -128,8 +156,6 @@ public class CarPath : MonoBehaviour
 
     public float GetSteering()
     {
-        float dist = t * speed;
-
         Vector3 pos = transform.position;
         Vector3 rot = transform.forward;
 
@@ -141,7 +167,7 @@ public class CarPath : MonoBehaviour
         float angle = Vector3.SignedAngle(transform.forward * -1.0f, (pos - targetPos), Vector3.up);
         float directionAngle = Vector3.SignedAngle(transform.forward, targetRot, Vector3.up);
 
-        float steering = Mathf.Clamp((angle + directionAngle) / maxAngle, -1.0f, 1.0f);
+        float steering = Mathf.Clamp((angle *0.75f + directionAngle * 0.25f) / maxAngle, -1.0f, 1.0f);
         return steering;
     }
 
@@ -153,7 +179,30 @@ public class CarPath : MonoBehaviour
 
     public float[] GetZone()
     {
-        return new float[3];
+        if (zones == null)
+            return new float[3];
+
+        Vector3 pos = transform.position;
+        float t = RoadSpline.path.GetClosestTimeOnPath(pos);
+
+        int idx1 = zones.Length - 1;
+        int idx2 = 0;
+        for (int i = 0; i < zones.Length; i++)
+        {
+            if (zones[i].Item1 > t)
+            {
+                idx1 = i - 1;
+                idx2 = i;
+                break;
+            }
+        }
+
+        float t1 = zones[idx1].Item1;
+        float t2 = zones[idx2].Item1;
+
+        float tt = (t - t1) / (t2 - t1);
+        Vector3 zone = zones[idx1].Item2 * (1.0f - tt) + zones[idx2].Item2 * tt;
+        return new float[3] { zone.x, zone.y, zone.z };
     }
 
     public void SaveJson(string path)
@@ -191,11 +240,14 @@ public class CarPath : MonoBehaviour
         Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
         Handles.DrawBezier(pos, targetPos, pos, targetPos, Color.green, null, 5.0f);
 
-
-        Gizmos.color = Color.blue;
-        for (int i = 0; i < averagedAngles.Length; i++)
+        if (doDrawTurns && averagedAngles != null)
         {
-            Gizmos.DrawSphere(RoadSpline.path.GetPointAtDistance(i * 1.0f), averagedAngles[i] / 100.0f + 0.1f);
+            Gizmos.color = Color.blue;
+            for (int i = 0; i < averagedAngles.Length; i++)
+            {
+                if (averagedAngles[i] > turnTh)
+                    Gizmos.DrawSphere(RoadSpline.path.GetPointAtDistance(i * pointsEvery), averagedAngles[i] / 180.0f);
+            }
         }
     }
 }

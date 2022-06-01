@@ -28,6 +28,10 @@ public class Car : MonoBehaviour
     {
         carPath = GetComponent<CarPath>();
         cameraSensor = GetComponent<CameraSensor>();
+
+        if (!System.IO.Directory.Exists(saveFolder))
+            System.IO.Directory.CreateDirectory(saveFolder);
+
         Randomize();
     }
 

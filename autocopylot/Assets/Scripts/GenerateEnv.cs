@@ -10,7 +10,16 @@ public class GenerateEnv : MonoBehaviour
     public string WallMatFolder => "Walls/Materials/";
 
     public PathCreator RoadSpline;
+    public Light Sun;
+    public float maxAngleSun = 30.0f;
+    public Color lowLerpColor = Color.yellow;
+    public Color highLerpColor = Color.white;
+    public float lowLerpIntensity = 0.8f;
+    public float highLerpIntensity = 1.1f;
 
+    // TODO
+    public GameObject Chair;
+    public int numChairs = 20;
 
     float margin = 2.0f;
     float wallHeight = 2.5f;
@@ -23,7 +32,30 @@ public class GenerateEnv : MonoBehaviour
         Bounds bounds = RoadSpline.path.bounds;
         bounds.Expand(margin);
         GenerateBox(bounds);
+        SunRandomization();
+        // PlaceChairs(numChairs);
     }
+
+    public void SunRandomization()
+    {
+        Sun.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
+        Sun.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
+        Sun.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
+
+    }
+
+    public void PlaceChairs(int num)
+    {
+        // TODO
+        for (int i = 0; i < num; i++)
+        {
+            Vector3 pos = RoadSpline.path.GetPointAtDistance(UnityEngine.Random.Range(0, RoadSpline.path.length));
+            Quaternion rot = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
+            GameObject go = Instantiate(Chair, pos, rot);
+            go.transform.parent = transform;
+        }
+    }
+
 
     public void GenerateBox(Bounds bounds)
     {
