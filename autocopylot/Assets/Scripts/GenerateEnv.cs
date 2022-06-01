@@ -14,6 +14,10 @@ public class GenerateEnv : MonoBehaviour
     public float maxAngleSun = 30.0f;
     public Color lowLerpColor = Color.yellow;
     public Color highLerpColor = Color.white;
+    public float lowLerpIntensity = 0.8f;
+    public float highLerpIntensity = 1.1f;
+
+    // TODO
     public GameObject Chair;
     public int numChairs = 20;
 
@@ -36,7 +40,7 @@ public class GenerateEnv : MonoBehaviour
     {
         Sun.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
         Sun.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
-        Sun.intensity = Mathf.Lerp(0.7f, 1.1f, UnityEngine.Random.value);
+        Sun.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
 
     }
 

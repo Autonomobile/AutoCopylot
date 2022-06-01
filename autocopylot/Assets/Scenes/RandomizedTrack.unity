@@ -901,6 +901,8 @@ MonoBehaviour:
   maxAngleSun: 45
   lowLerpColor: {r: 1, g: 0.9840231, b: 0.7877358, a: 1}
   highLerpColor: {r: 0.8006408, g: 0.913858, b: 0.9811321, a: 1}
+  lowLerpIntensity: 0.8
+  highLerpIntensity: 1.1
   Chair: {fileID: 100002, guid: 7ca5d8cded8a74817b5e26520c26f6f6, type: 3}
   numChairs: 20
 --- !u!20 &959013317
@@ -2169,7 +2171,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.8028048, g: 0.9146196, b: 0.97903275, a: 1}
+  m_Color: {r: 0.9198113, g: 0.96970654, b: 1, a: 1}
   m_Intensity: 0.79935503
   m_Range: 10
   m_SpotAngle: 30
