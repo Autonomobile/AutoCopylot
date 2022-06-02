@@ -391,7 +391,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193954153}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalRotation: {x: 0.85198736, y: -0.005586762, z: 0.009093166, w: 0.5234536}
   m_LocalPosition: {x: 0, y: 3.1, z: 0}
   m_LocalScale: {x: 2.1999996, y: 0.8000001, z: 1}
   m_Children: []
@@ -409,8 +409,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.9801357, b: 0.9103774, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.88445854, g: 0.9111452, b: 0.8135588, a: 1}
+  m_Intensity: 0.9719786
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -951,7 +951,7 @@ MonoBehaviour:
   generateEnv: {fileID: 0}
   generateRoad: {fileID: 0}
   DoSave: 0
-  RandomizeEvery: 20
+  RandomizeEvery: 10
   timesteps: 0.033
 --- !u!114 &633776537
 MonoBehaviour:
@@ -2946,9 +2946,9 @@ MonoBehaviour:
   FOV: 190
   cubeMapType: 512
   antiAliasingType: 2
-  backFadeIntensity: 0.1
+  backFadeIntensity: 0.25
   crescentFadeIntensity: 1
-  crescentFadeRadius: 0.95
+  crescentFadeRadius: 0.75
   crescentFadeOffset: 0
   fpsText: {fileID: 0}
   doLoadSettingsFromFile: 0
@@ -3572,7 +3572,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18838
+  m_Name: pb_Mesh18178
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4290,6 +4290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7306904206160427172}
+  - component: {fileID: 1318815774532546821}
   m_Layer: 0
   m_Name: Env
   m_TagString: Untagged
@@ -4297,6 +4298,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1318815774532546821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318815774532546820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15bb147959bd864188e2afe58a00434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RoadSpline: {fileID: 1987849106}
+  doGenerateWalls: 0
+  doRandomizeSun: 1
+  doGenerateChairs: 0
+  Sun: {fileID: 193954155}
+  maxAngleSun: 30
+  lowLerpColor: {r: 0.990566, g: 0.9594978, b: 0.71488965, a: 1}
+  highLerpColor: {r: 0.6839622, g: 0.81978005, b: 1, a: 1}
+  lowLerpIntensity: 0.8
+  highLerpIntensity: 1.1
+  Chair: {fileID: 100002, guid: 7ca5d8cded8a74817b5e26520c26f6f6, type: 3}
+  numChairs: 20
 --- !u!4 &4312893589990018474 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4312893590686481186, guid: 3a57b8b4a34085c42b59836b62f4ecb1, type: 3}

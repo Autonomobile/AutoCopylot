@@ -10,6 +10,11 @@ public class GenerateEnv : MonoBehaviour
     public string WallMatFolder => "Walls/Materials/";
 
     public PathCreator RoadSpline;
+
+    public bool doGenerateWalls = true;
+    public bool doRandomizeSun = true;
+    public bool doGenerateChairs = false;
+
     public Light Sun;
     public float maxAngleSun = 30.0f;
     public Color lowLerpColor = Color.yellow;
@@ -17,7 +22,6 @@ public class GenerateEnv : MonoBehaviour
     public float lowLerpIntensity = 0.8f;
     public float highLerpIntensity = 1.1f;
 
-    // TODO
     public GameObject Chair;
     public int numChairs = 20;
 
@@ -29,11 +33,23 @@ public class GenerateEnv : MonoBehaviour
         if (RoadSpline is null)
             throw new ArgumentNullException("RoadSpline is null.");
 
-        Bounds bounds = RoadSpline.path.bounds;
-        bounds.Expand(margin);
-        GenerateBox(bounds);
-        SunRandomization();
-        // PlaceChairs(numChairs);
+        if (doGenerateWalls)
+        {
+            Bounds bounds = RoadSpline.path.bounds;
+            bounds.Expand(margin);
+            GenerateBox(bounds);
+        }
+        
+        if (doRandomizeSun)
+        {
+            SunRandomization();
+        }
+
+        if (doGenerateChairs)
+        {
+            GenerateChairs(numChairs);
+        }
+
     }
 
     public void SunRandomization()
@@ -44,7 +60,7 @@ public class GenerateEnv : MonoBehaviour
 
     }
 
-    public void PlaceChairs(int num)
+    public void GenerateChairs(int num)
     {
         // TODO
         for (int i = 0; i < num; i++)
