@@ -1000,7 +1000,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 633776535}
   m_LocalRotation: {x: -0, y: -0.80515134, z: -0, w: 0.5930694}
-  m_LocalPosition: {x: 3.48, y: 0, z: -0.09}
+  m_LocalPosition: {x: 6.4, y: 0, z: -0.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1725104964}
@@ -3572,7 +3572,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18178
+  m_Name: pb_Mesh16360
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
