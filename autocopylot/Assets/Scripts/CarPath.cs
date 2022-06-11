@@ -238,7 +238,7 @@ public class CarPath : MonoBehaviour
         Gizmos.DrawSphere(targetPos, 0.1f);
 
         Vector3 endPos = pos + rot * steeringVect * 0.2f;
-        Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 5.0f);
+        Handles.DrawBezier(pos, endPos, pos, endPos, Color.red, null, 10.0f);
         Handles.DrawBezier(pos, targetPos, pos, targetPos, Color.green, null, 5.0f);
 
         if (doDrawTurns && averagedAngles != null)
