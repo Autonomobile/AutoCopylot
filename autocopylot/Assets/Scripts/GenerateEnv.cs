@@ -7,7 +7,8 @@ using PathCreation;
 public class GenerateEnv : MonoBehaviour
 {
     public string FloorMatFolder => "Floors/Materials/";
-    public string WallMatFolder => "Walls/Materials/";
+    public string WallMatFolder => "Floors/Materials/";
+    public string RoadMatFolder => "CustomRoads/Materials/";
 
     public PathCreator RoadSpline;
 
@@ -22,6 +23,8 @@ public class GenerateEnv : MonoBehaviour
     public float lowLerpIntensity = 0.8f;
     public float highLerpIntensity = 1.1f;
 
+    public float LaneAppearProbability = 0.7f;
+    
     public GameObject Chair;
     public int numChairs = 20;
 
@@ -75,6 +78,8 @@ public class GenerateEnv : MonoBehaviour
 
     public void GenerateBox(Bounds bounds)
     {
+        UpdateRoad();
+        
         float centerx = (bounds.min.x + bounds.max.x) / 2.0f;
         float centerz = (bounds.min.z + bounds.max.z) / 2.0f;
         CreateFloor(centerx, centerz, bounds.size.z, bounds.size.x, Vector3.right, "Floor");
@@ -84,7 +89,7 @@ public class GenerateEnv : MonoBehaviour
         CreateWall(centerx, bounds.min.z, bounds.size.x, wallHeight, Vector3.down, Vector3.forward, "Wall 3");
         CreateWall(centerx, bounds.max.z, bounds.size.x, wallHeight, Vector3.down, Vector3.back, "Wall 4");
     }
-
+    
     public void CreateFloor(float x, float y, float xsize, float ysize, Vector3 Orientation, string name)
     {
         GameObject plane = GameObject.Find(name);
@@ -120,15 +125,55 @@ public class GenerateEnv : MonoBehaviour
     }
 
 
+    public void UpdateRoad()
+    {
+        GameObject road = GameObject.Find("Road Mesh Holder");        
+
+        if (road is null)
+            return;
+        
+        road.GetComponent<MeshRenderer>().material = GetRandomRoadMaterial();
+    }
+
     Material GetRandomFloorMaterial()
     {
+        if (UnityEngine.Random.value < .5f) return GetRandomColorMaterial();
+
         Material[] materials = Resources.LoadAll<Material>(FloorMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
     Material GetRandomWallMaterial()
     {
+        if (UnityEngine.Random.value < .5f) return GetRandomColorMaterial();
+        
         Material[] materials = Resources.LoadAll<Material>(WallMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
 
+    Material GetRandomRoadMaterial()
+    {
+        Material[] materials = Resources.LoadAll<Material>(RoadMatFolder);
+        
+        float random = UnityEngine.Random.value;
+        if (random < LaneAppearProbability)
+        {
+            Material lane;
+            if (UnityEngine.Random.value < .5f)
+                lane =  materials[0];
+            else 
+                lane = materials[1];
+            
+            lane.color = UnityEngine.Random.ColorHSV();
+            return lane;
+        }
+        
+        return materials[UnityEngine.Random.Range(0, materials.Length)];
+    }
+
+    Material GetRandomColorMaterial()
+    {
+        Material mat = new Material(Shader.Find("Standard"));
+        mat.color = UnityEngine.Random.ColorHSV();
+        return mat;
+    }
 }
