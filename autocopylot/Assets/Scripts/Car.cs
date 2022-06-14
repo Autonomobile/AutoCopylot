@@ -13,7 +13,7 @@ public class Car : MonoBehaviour
     private static DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
     private static DateTime Now = System.DateTime.Now;
     private string saveFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/" +
-                                 Now.ToString("yyyy-MM-dd_HH:mm:ss") + "_" + saveName + "/";
+                                 Now.ToString("yyyy-MM-dd_HH-mm-ss") + "_" + saveName + "/";
 
     public GenerateEnv generateEnv;
     public GenerateRoad generateRoad;

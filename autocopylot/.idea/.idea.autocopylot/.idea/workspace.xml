@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="dc62cd3c-6bae-4ba4-a1da-08180a9f57d7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.autocopylot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.autocopylot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-100.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-100.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-60.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-60.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Floors/Materials/glass.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Floors/Materials/glass.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Floors/Materials/tree.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Floors/Materials/tree.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/train.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/train.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Car.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Car.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GenerateEnv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GenerateEnv.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +90,7 @@
       <workItem from="1655033729688" duration="1391000" />
       <workItem from="1655035243053" duration="393000" />
       <workItem from="1655147824401" duration="7991000" />
-      <workItem from="1655207201396" duration="7103000" />
+      <workItem from="1655207201396" duration="8508000" />
     </task>
     <servers />
   </component>
