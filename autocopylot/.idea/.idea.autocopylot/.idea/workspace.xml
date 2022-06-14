@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="dc62cd3c-6bae-4ba4-a1da-08180a9f57d7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.autocopylot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.autocopylot/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-100.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-100.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-60.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/CustomRoads/Materials/rbrl-60.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/train.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/train.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Car.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Car.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -13,6 +16,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/527a33cfc35f492a84542abb05cd8ecd59600/ff/d02a0118/InspectorElement.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/62/aab382f3/String.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/96565208cfa649b79abc1a0a816e046b13a800/93/e8ce8e87/UnitySynchronizationContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ae0803dd86754ee6a1d5f69f76ec8fef28000/84/4992880f/GUIUtility.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1121b858c7e47a89616fb95134fee2ac4200/28/bb19a4e0/CallbackEventHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1121b858c7e47a89616fb95134fee2ac4200/37/5ba4364f/UIEventRegistration.cs" root0="SKIP_HIGHLIGHTING" />
@@ -65,10 +69,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="10402">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="10402" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -90,7 +94,7 @@
       <workItem from="1655033729688" duration="1391000" />
       <workItem from="1655035243053" duration="393000" />
       <workItem from="1655147824401" duration="7991000" />
-      <workItem from="1655207201396" duration="8508000" />
+      <workItem from="1655207201396" duration="11286000" />
     </task>
     <servers />
   </component>

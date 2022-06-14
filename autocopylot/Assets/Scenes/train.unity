@@ -295,8 +295,8 @@ MonoBehaviour:
   lowLerpColor: {r: 1, g: 0.9840231, b: 0.7877358, a: 1}
   highLerpColor: {r: 0.8006408, g: 0.913858, b: 0.9811321, a: 1}
   lowLerpIntensity: 0.8
-  highLerpIntensity: 2.1
-  LaneAppearProbability: 0.99
+  highLerpIntensity: 1.4
+  LaneAppearProbability: 1
   Chair: {fileID: 100002, guid: 7ca5d8cded8a74817b5e26520c26f6f6, type: 3}
   numChairs: 20
 --- !u!1 &1082005111
@@ -516,15 +516,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: DoSave
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: nbImages
-      value: 10000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: saveName
       value: test
+      objectReference: {fileID: 0}
+    - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
+      propertyPath: generation
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: generateEnv
@@ -536,7 +540,7 @@ PrefabInstance:
       objectReference: {fileID: 1696469290}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: RandomizeEvery
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667686, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_RootOrder
@@ -1105,7 +1109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861955354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -7.04, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 888127803}
@@ -1123,7 +1127,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.9198113, g: 0.96970654, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.799355
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1260,7 +1264,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950463901}
   m_LocalRotation: {x: 0.84204614, y: 0.006732055, z: -0.010511978, w: 0.53926116}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.32, y: 0, z: 0.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 888127803}
