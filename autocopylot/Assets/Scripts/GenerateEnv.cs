@@ -18,6 +18,7 @@ public class GenerateEnv : MonoBehaviour
     public bool doGenerateChairs = false;
 
     public Light Sun;
+    public Light light;
     public float maxAngleSun = 30.0f;
     public Color lowLerpColor = Color.yellow;
     public Color highLerpColor = Color.white;
@@ -62,6 +63,9 @@ public class GenerateEnv : MonoBehaviour
         Sun.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
         Sun.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
 
+        light.transform.rotation = Quaternion.Euler(-90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
+        light.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
+        light.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
     }
 
     public void GenerateChairs(int num)
@@ -87,6 +91,7 @@ public class GenerateEnv : MonoBehaviour
         // floor
         CreateFloor(centerx, centerz, bounds.size.z, bounds.size.x, Vector3.right, "Floor");
         
+        // ceiling
         CreateCeiling(centerx, wallHeight, bounds.size.z, bounds.size.x, "Ceiling");
 
         // walls

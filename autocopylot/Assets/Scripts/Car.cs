@@ -26,6 +26,9 @@ public class Car : MonoBehaviour
     CameraSensor cameraSensor;
     float t = 0.0f;
     float counter = 0.0f;
+    
+    int step = 0;
+    public int nbImages = 1000;
 
     void Start()
     {
@@ -67,6 +70,13 @@ public class Car : MonoBehaviour
         {
             t += timesteps;
             carPath.UpdateTransform(t);
+            
+            step++;
+            if (step > nbImages)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+                return;
+            }
 
             if (DoSave)
             {
@@ -75,6 +85,7 @@ public class Car : MonoBehaviour
                 carPath.SaveJson(saveFolder + curTime + ".json");
             }
         }
+
     }
 
     public static string GetCurrentTime()
