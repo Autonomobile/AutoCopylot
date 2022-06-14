@@ -9,8 +9,11 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
 
-    static string saveFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/";
-    static System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    public string saveName = "";
+    private static DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    private static DateTime Now = System.DateTime.Now;
+    private string saveFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/" +
+                                 Now.ToString("yyyy-MM-dd_HH:mm:ss") + "_" + saveName + "/";
 
     public GenerateEnv generateEnv;
     public GenerateRoad generateRoad;
@@ -29,20 +32,26 @@ public class Car : MonoBehaviour
         carPath = GetComponent<CarPath>();
         cameraSensor = GetComponent<CameraSensor>();
 
-        if (!System.IO.Directory.Exists(saveFolder))
-            System.IO.Directory.CreateDirectory(saveFolder);
+        if (DoSave)
+        {
+            if (!System.IO.Directory.Exists(saveFolder))
+                System.IO.Directory.CreateDirectory(saveFolder);
+        }
 
+        carPath.Start();
         Randomize();
     }
 
     public void Randomize()
     {
-        if (generateRoad != null)
-            generateRoad.Start();
+        //TODO: make cleaner
+        // if (generateRoad != null)
+        //     generateRoad.Start();
+        
         if (generateEnv != null)
             generateEnv.Start();
 
-        carPath.Start();
+        // carPath.Start(); // do once
     }
 
     void Update()

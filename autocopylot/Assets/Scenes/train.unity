@@ -294,7 +294,7 @@ MonoBehaviour:
   highLerpColor: {r: 0.8006408, g: 0.913858, b: 0.9811321, a: 1}
   lowLerpIntensity: 0.8
   highLerpIntensity: 1.1
-  LaneAppearProbability: 0.5
+  LaneAppearProbability: 0.99
   Chair: {fileID: 100002, guid: 7ca5d8cded8a74817b5e26520c26f6f6, type: 3}
   numChairs: 20
 --- !u!1 &1082005111
@@ -517,6 +517,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
+      propertyPath: saveName
+      value: test
+      objectReference: {fileID: 0}
+    - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: generateEnv
       value: 
       objectReference: {fileID: 888127804}
@@ -668,7 +672,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-12946
+  m_Name: pb_Mesh-22856
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

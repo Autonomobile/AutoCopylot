@@ -82,8 +82,13 @@ public class GenerateEnv : MonoBehaviour
         
         float centerx = (bounds.min.x + bounds.max.x) / 2.0f;
         float centerz = (bounds.min.z + bounds.max.z) / 2.0f;
+        
+        // floor
         CreateFloor(centerx, centerz, bounds.size.z, bounds.size.x, Vector3.right, "Floor");
+        
+        CreateCeiling(centerx, wallHeight, bounds.size.z, bounds.size.x, "Ceiling");
 
+        // walls
         CreateWall(bounds.min.x, centerz, bounds.size.z, wallHeight, Vector3.down, Vector3.right, "Wall 1");
         CreateWall(bounds.max.x, centerz, bounds.size.z, wallHeight, Vector3.down, Vector3.left, "Wall 2");
         CreateWall(centerx, bounds.min.z, bounds.size.x, wallHeight, Vector3.down, Vector3.forward, "Wall 3");
@@ -122,6 +127,24 @@ public class GenerateEnv : MonoBehaviour
         wall.transform.position = new Vector3(x, ysize / 2.0f, y);
         wall.transform.rotation = Quaternion.LookRotation(forward, upwards);
         wall.GetComponent<MeshRenderer>().material = GetRandomWallMaterial();
+    }
+    
+    public void CreateCeiling(float x, float y, float xsize, float ysize, string name)
+    {
+        GameObject plane = GameObject.Find(name);
+        if (plane is null)
+        {
+            plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            plane.name = name;
+            plane.AddComponent<BoxCollider>();
+        }
+
+        plane.transform.parent = transform;
+        plane.transform.localScale = new Vector3(xsize / 10.0f, 1, ysize / 10.0f);
+        plane.transform.position = new Vector3(x, y, 0);
+        plane.transform.rotation = Quaternion.LookRotation(Vector3.right);
+        plane.transform.Rotate(0, 0, 180);
+        plane.GetComponent<Renderer>().material = GetRandomFloorMaterial();
     }
 
 

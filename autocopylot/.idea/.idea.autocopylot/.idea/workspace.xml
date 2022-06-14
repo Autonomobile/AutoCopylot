@@ -3,46 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="dc62cd3c-6bae-4ba4-a1da-08180a9f57d7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.autocopylot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.autocopylot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Floors/Materials/floor_pattern.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Floors/Materials/floor_pattern.mat.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-0.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-0.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-1.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-2.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/RoadSplines/circuit-3.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0075_1_seamless_S.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0075_1_seamless_S.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0076_3_seamless_S.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0076_3_seamless_S.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0086_1_seamless_S 1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0086_1_seamless_S 1.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0086_1_seamless_S.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0086_1_seamless_S.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0106_1_seamless_S.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0106_1_seamless_S.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0114_4_S.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0114_4_S.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0153_1_seamless_S.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/TexturesCom_Roads0153_1_seamless_S.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityChallengeRoad.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityChallengeRoad.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityRoad2.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityRoad2.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityRoadBridge.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityRoadBridge.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityRoadTurn.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacityRoadTurn.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacitySimRoad.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/UdacitySimRoad.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/rbrl-100.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/rbrl-100.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/rbrl-60.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Roads/Materials/rbrl-60.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-0.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-0.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-1.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-2.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/TrajectorySplines/circuit-3.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/custom random.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/custom random.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/custom renault.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/custom renault.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/train.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/train.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Car.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Car.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/CarPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CarPath.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GenerateEnv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GenerateEnv.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Textures/roboracingleague/Materials/track_lines3.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Textures/roboracingleague/Materials/track_lines3.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,10 +68,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="228077">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="228077" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -129,6 +93,7 @@
       <workItem from="1655033729688" duration="1391000" />
       <workItem from="1655035243053" duration="393000" />
       <workItem from="1655147824401" duration="7991000" />
+      <workItem from="1655207201396" duration="2556000" />
     </task>
     <servers />
   </component>
@@ -151,37 +116,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GenerateRoad.cs</url>
-          <line>60</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/GenerateRoad.cs" initialLine="60" containingFunctionPresentation="method 'ApplyPath'">
-            <startOffsets>
-              <option value="1543" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1613" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GenerateRoad.cs</url>
-          <line>61</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/GenerateRoad.cs" initialLine="61" containingFunctionPresentation="method 'ApplyPath'">
-            <startOffsets>
-              <option value="1622" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1653" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

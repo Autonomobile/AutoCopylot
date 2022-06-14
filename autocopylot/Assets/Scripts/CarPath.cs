@@ -174,21 +174,13 @@ public class CarPath : MonoBehaviour
         return steering;
     }
 
-    public float GetThrottle(float steering, float[] zone)
+    public float GetThrottle(float[] zone)
     {
-        int maxIndex = 0;
-        float max = zone[0];
-
+        float throttle = 0.0f;
         for (int i = 0; i < zone.Length; i++)
-        {
-            if (zone[i] > max)
-            {
-                max = zone[i];
-                maxIndex = i;
-            }
-        }
-
-        return lookupZone[maxIndex];
+            throttle += zone[i] * lookupZone[i];
+        
+        return throttle;
     }
 
     public float[] GetZone()
@@ -223,7 +215,7 @@ public class CarPath : MonoBehaviour
     {
         float steering = GetSteering();
         float[] zone = GetZone();
-        float throttle = GetThrottle(steering, zone);
+        float throttle = GetThrottle(zone);
 
         string json = JsonUtility.ToJson(new CarData(steering, speed, throttle, zone));
         System.IO.File.WriteAllText(path, json);
