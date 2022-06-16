@@ -294,9 +294,10 @@ MonoBehaviour:
   maxAngleSun: 60
   lowLerpColor: {r: 1, g: 0.9840231, b: 0.7877358, a: 1}
   highLerpColor: {r: 0.8006408, g: 0.913858, b: 0.9811321, a: 1}
-  lowLerpIntensity: 0.8
-  highLerpIntensity: 1.4
-  LaneAppearProbability: 1
+  lowLerpIntensity: 0.5
+  highLerpIntensity: 1.5
+  ColorProbability: 0.5
+  LaneAppearProbability: 0.75
   Chair: {fileID: 100002, guid: 7ca5d8cded8a74817b5e26520c26f6f6, type: 3}
   numChairs: 20
 --- !u!1 &1082005111
@@ -520,15 +521,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: nbImages
-      value: 100
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: saveName
-      value: test
+      value: full
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: generation
-      value: 3
+      value: 82
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: generateEnv
@@ -540,7 +541,7 @@ PrefabInstance:
       objectReference: {fileID: 1696469290}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: RandomizeEvery
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667686, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_RootOrder
@@ -622,6 +623,14 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 232442691421268344, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
+      propertyPath: FOV
+      value: 190
+      objectReference: {fileID: 0}
+    - target: {fileID: 232442691421268344, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
+      propertyPath: worldCameraPitch
+      value: 33
+      objectReference: {fileID: 0}
     - target: {fileID: 232442691545592931, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_CastShadows
       value: 0
@@ -690,7 +699,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-22856
+  m_Name: pb_Mesh-7286
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1049,7 +1058,7 @@ MonoBehaviour:
       - 0
       globalNormalsAngle: 0
       flipNormals: 0
-    vertexPathUpToDate: 1
+    vertexPathUpToDate: 0
     vertexPathMaxAngleError: 0.3
     vertexPathMinVertexSpacing: 0.01
     showTransformTool: 1

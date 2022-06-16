@@ -25,6 +25,7 @@ public class GenerateEnv : MonoBehaviour
     public float lowLerpIntensity = 0.8f;
     public float highLerpIntensity = 1.1f;
 
+    public float ColorProbability = 0.5f;
     public float LaneAppearProbability = 0.7f;
     
     public GameObject Chair;
@@ -166,14 +167,14 @@ public class GenerateEnv : MonoBehaviour
 
     Material GetRandomFloorMaterial()
     {
-        if (UnityEngine.Random.value < .5f) return GetRandomColorMaterial();
+        if (UnityEngine.Random.value < ColorProbability) return GetRandomColorMaterial();
 
         Material[] materials = Resources.LoadAll<Material>(FloorMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
     Material GetRandomWallMaterial()
     {
-        if (UnityEngine.Random.value < .5f) return GetRandomColorMaterial();
+        if (UnityEngine.Random.value < ColorProbability) return GetRandomColorMaterial();
         
         Material[] materials = Resources.LoadAll<Material>(WallMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
