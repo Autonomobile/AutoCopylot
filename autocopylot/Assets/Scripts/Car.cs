@@ -9,12 +9,16 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
 
-    static string saveFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/";
-    static System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    public string saveName = "";
+    private static DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    private static DateTime Now = DateTime.Now;
+    private string saveFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect2/" +
+                                 Now.ToString("yyyy-MM-dd_HH-mm-ss") + "_" + saveName + "/";
 
     public GenerateEnv generateEnv;
     public GenerateRoad generateRoad;
-
+    
+    public int generation = 1;
     public bool DoSave = true;
     public float RandomizeEvery = 20.0f;
     public float timesteps = 0.033f;
@@ -23,30 +27,47 @@ public class Car : MonoBehaviour
     CameraSensor cameraSensor;
     float t = 0.0f;
     float counter = 0.0f;
-
+    
+    int step = 0;
+    public int nbImages = 1000;
+    private int skip = 2;
+    
     void Start()
     {
         carPath = GetComponent<CarPath>();
         cameraSensor = GetComponent<CameraSensor>();
+        
+        
+        if (DoSave)
+        {
+            if (!System.IO.Directory.Exists(saveFolder))
+                System.IO.Directory.CreateDirectory(saveFolder);
+        }
 
-        if (!System.IO.Directory.Exists(saveFolder))
-            System.IO.Directory.CreateDirectory(saveFolder);
-
+        carPath.Start();
         Randomize();
     }
 
     public void Randomize()
     {
-        if (generateRoad != null)
-            generateRoad.Start();
+        //TODO: make cleaner
+        // if (generateRoad != null)
+        //     generateRoad.Start();
+        
         if (generateEnv != null)
             generateEnv.Start();
 
-        carPath.Start();
+        // carPath.Start(); // do once
     }
 
     void Update()
     {
+        if (skip > 0)
+        {
+            skip--;
+            return;
+        }
+        
         counter += timesteps;
         if (counter > RandomizeEvery)
         {
@@ -59,6 +80,23 @@ public class Car : MonoBehaviour
             t += timesteps;
             carPath.UpdateTransform(t);
 
+            step++;
+            if (step > nbImages)
+            {
+                Now = DateTime.Now;
+                generation--;
+                step = 0;
+                if (generation < 1)
+                {
+                    UnityEditor.EditorApplication.isPlaying = false;
+                    return;
+                }
+                if (!System.IO.Directory.Exists(saveFolder))
+                    System.IO.Directory.CreateDirectory(saveFolder);
+                carPath.Start();
+                return;
+            }
+
             if (DoSave)
             {
                 string curTime = GetCurrentTime();
@@ -66,6 +104,7 @@ public class Car : MonoBehaviour
                 carPath.SaveJson(saveFolder + curTime + ".json");
             }
         }
+
     }
 
     public static string GetCurrentTime()

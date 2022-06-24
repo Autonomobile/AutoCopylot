@@ -43,6 +43,8 @@ public class CarPath : MonoBehaviour
     public float turnTh = 20f;
     public bool doDrawTurns = true;
 
+    public float[] lookupZone = { 0.4f, 0.3f, 0.2f };
+
     private float t = 0.0f;
     private float dt = 0.0f;
     private float prevDist = 0.0f;
@@ -168,14 +170,17 @@ public class CarPath : MonoBehaviour
         float directionAngle = Vector3.SignedAngle(transform.forward, targetRot, Vector3.up);
 
         float steering = Mathf.Clamp((angle * 0.4f + directionAngle * 0.1f) / maxAngle, -1.0f, 1.0f);
-        Debug.Log(steering);
+        // Debug.Log(steering);
         return steering;
     }
 
-    public float GetThrottle()
+    public float GetThrottle(float[] zone)
     {
-        // TODO: Find a policy
-        return 0.0f;
+        float throttle = 0.0f;
+        for (int i = 0; i < zone.Length; i++)
+            throttle += zone[i] * lookupZone[i];
+        
+        return throttle;
     }
 
     public float[] GetZone()
@@ -209,8 +214,8 @@ public class CarPath : MonoBehaviour
     public void SaveJson(string path)
     {
         float steering = GetSteering();
-        float throttle = GetThrottle();
         float[] zone = GetZone();
+        float throttle = GetThrottle(zone);
 
         string json = JsonUtility.ToJson(new CarData(steering, speed, throttle, zone));
         System.IO.File.WriteAllText(path, json);
@@ -231,8 +236,8 @@ public class CarPath : MonoBehaviour
         float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + timeLookahead * speed;
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
 
-        // Gizmos.color = Color.blue;
-        // Gizmos.DrawSphere(pos, 0.1f);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(pos, 0.1f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(targetPos, 0.1f);
