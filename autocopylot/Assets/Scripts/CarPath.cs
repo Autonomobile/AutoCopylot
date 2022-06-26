@@ -11,12 +11,19 @@ public class CarData
     public float speed;
     public float throttle;
     public float[] zone;
-    public CarData(float steering, float speed, float throttle, float[] zone)
+    public float[] trajectory;
+    public CarData(float steering, float speed, float throttle, float[] zone, Vector3[] trajectory)
     {
         this.steering = steering;
         this.speed = speed;
         this.throttle = throttle;
         this.zone = zone;
+        this.trajectory = new float[trajectory.Length * 2];
+        for (int i = 0; i < trajectory.Length; i++)
+        {
+            this.trajectory[i * 2] = trajectory[i].x;
+            this.trajectory[i * 2 + 1] = trajectory[i].z;
+        }
     }
 }
 
@@ -46,6 +53,8 @@ public class CarPath : MonoBehaviour
     private float t = 0.0f;
     private float dt = 0.0f;
     private float prevDist = 0.0f;
+    private int laneRes = 10;
+    private float laneDist = 2.0f;
 
     private (float, Vector3)[] zones;
     private float[] averagedAngles;
@@ -163,13 +172,29 @@ public class CarPath : MonoBehaviour
         Vector3 targetPos = TrajectorySpline.path.GetPointAtDistance(aheadDist);
         Vector3 targetRot = TrajectorySpline.path.GetDirectionAtDistance(aheadDist);
 
-        Quaternion InverseRot = Quaternion.Inverse(transform.rotation);
         float angle = Vector3.SignedAngle(transform.forward * -1.0f, (pos - targetPos), Vector3.up);
         float directionAngle = Vector3.SignedAngle(transform.forward, targetRot, Vector3.up);
 
         float steering = Mathf.Clamp((angle * 0.4f + directionAngle * 0.1f) / maxAngle, -1.0f, 1.0f);
-        Debug.Log(steering);
         return steering;
+    }
+
+    public Vector3[] GetTrajectory()
+    {
+        Vector3 pos = transform.position;
+        Quaternion inverseRot = Quaternion.Inverse(transform.rotation);
+
+        Vector3[] laneCenter = new Vector3[laneRes];
+
+        for (int i = 0; i < laneCenter.Length; i++)
+        {
+            float aheadDist = TrajectorySpline.path.GetClosestDistanceAlongPath(pos) + i * (laneDist / laneRes);
+            Vector3 ahead = TrajectorySpline.path.GetPointAtDistance(aheadDist);
+            Vector3 relative = inverseRot * (ahead - pos);
+            laneCenter[i] = relative;
+        }
+
+        return laneCenter;
     }
 
     public float GetThrottle()
@@ -211,8 +236,9 @@ public class CarPath : MonoBehaviour
         float steering = GetSteering();
         float throttle = GetThrottle();
         float[] zone = GetZone();
+        Vector3[] trajectory = GetTrajectory();
 
-        string json = JsonUtility.ToJson(new CarData(steering, speed, throttle, zone));
+        string json = JsonUtility.ToJson(new CarData(steering, speed, throttle, zone, trajectory));
         System.IO.File.WriteAllText(path, json);
     }
 
@@ -249,6 +275,13 @@ public class CarPath : MonoBehaviour
                 if (averagedAngles[i] > turnTh)
                     Gizmos.DrawSphere(RoadSpline.path.GetPointAtDistance(i * pointsEvery), averagedAngles[i] / 180.0f);
             }
+        }
+
+        Vector3[] trajectory = GetTrajectory();
+        foreach (Vector3 trajectoryPoint in trajectory)
+        {
+            Gizmos.DrawSphere(trajectoryPoint + pos, 0.1f);
+            // Debug.Log(trajectoryPoint);
         }
     }
 }
