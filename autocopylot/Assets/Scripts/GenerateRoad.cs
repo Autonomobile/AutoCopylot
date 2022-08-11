@@ -244,7 +244,8 @@ public class GenerateRoad : MonoBehaviour
 
         meshHolder.transform.rotation = Quaternion.identity;
         meshHolder.transform.position = Vector3.zero + Vector3.up * 0.001f;
-        meshHolder.transform.localScale = Vector3.one;
+        meshHolder.transform.localScale = new Vector3(1, 0.001f, 1);
+
 
         // Ensure mesh renderer and filter components are assigned
         if (!meshHolder.gameObject.GetComponent<MeshFilter>())

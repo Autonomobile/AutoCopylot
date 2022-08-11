@@ -7,9 +7,8 @@ using PathCreation;
 
 public class GenerateEnv : MonoBehaviour
 {
-    public string FloorMatFolder => "Floors/Materials/";
-    public string WallMatFolder => "Floors/Materials/";
-    public string RoadMatFolder => "CustomRoads/Materials/";
+    public string MaterialsFolder => "Materials/Materials/";
+    public string RoadMatFolder => "Roads/Materials/";
 
     public PathCreator RoadSpline;
 
@@ -219,7 +218,7 @@ public class GenerateEnv : MonoBehaviour
     {
         if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
 
-        Material[] materials = Resources.LoadAll<Material>(FloorMatFolder);
+        Material[] materials = Resources.LoadAll<Material>(MaterialsFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
     
@@ -227,7 +226,7 @@ public class GenerateEnv : MonoBehaviour
     {
         if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
         
-        Material[] materials = Resources.LoadAll<Material>(WallMatFolder);
+        Material[] materials = Resources.LoadAll<Material>(MaterialsFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
 
