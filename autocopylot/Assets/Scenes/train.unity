@@ -237,7 +237,7 @@ Transform:
   - {fileID: 1082005112}
   - {fileID: 2073547103}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &888127802
 GameObject:
@@ -271,7 +271,7 @@ Transform:
   - {fileID: 1950463903}
   - {fileID: 1861955355}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &888127804
 MonoBehaviour:
@@ -286,20 +286,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoadSpline: {fileID: 1854061155}
-  doGenerateWalls: 1
-  doRandomizeSun: 1
-  doGenerateChairs: 0
-  Sun: {fileID: 1950463902}
-  light: {fileID: 1861955356}
-  maxAngleSun: 60
+  generateWalls: 1
+  randomizeLights: 1
+  generateChairs: 0
+  floorLightObjet: {fileID: 1950463902}
+  ceilLightObject: {fileID: 1861955356}
   lowLerpColor: {r: 1, g: 0.9840231, b: 0.7877358, a: 1}
   highLerpColor: {r: 0.8006408, g: 0.913858, b: 0.9811321, a: 1}
+  maxLightAngle: 30
   lowLerpIntensity: 0.5
   highLerpIntensity: 1.5
-  ColorProbability: 0.5
-  LaneAppearProbability: 0.75
-  Chair: {fileID: 100002, guid: 7ca5d8cded8a74817b5e26520c26f6f6, type: 3}
+  materialColorProbability: 0.5
+  laneAppearProbability: 0.7
+  ChairObject: {fileID: 0}
   numChairs: 20
+--- !u!1 &926100380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 926100382}
+  - component: {fileID: 926100381}
+  m_Layer: 0
+  m_Name: ENV
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &926100381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926100380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642c16b3876a46c4fa75f5fd642022de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &926100382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926100380}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1082005111
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,6 +559,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
+      propertyPath: save
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: DoSave
       value: 1
       objectReference: {fileID: 0}
@@ -529,7 +576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: generation
-      value: 82
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667685, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: generateEnv
@@ -545,7 +592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667686, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667686, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -666,7 +713,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1696469290
 MonoBehaviour:
@@ -699,7 +746,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-7286
+  m_Name: pb_Mesh-8020
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1058,7 +1105,7 @@ MonoBehaviour:
       - 0
       globalNormalsAngle: 0
       flipNormals: 0
-    vertexPathUpToDate: 0
+    vertexPathUpToDate: 1
     vertexPathMaxAngleError: 0.3
     vertexPathMinVertexSpacing: 0.01
     showTransformTool: 1

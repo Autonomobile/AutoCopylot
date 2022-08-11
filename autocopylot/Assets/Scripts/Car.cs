@@ -9,36 +9,42 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
 
-    public string saveName = "";
-    private static DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    private static DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     private static DateTime Now = DateTime.Now;
-    private string saveFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/collect/" +
-                                 Now.ToString("yyyy-MM-dd_HH-mm-ss") + "_" + saveName + "/";
 
+    public string saveName = "";
+    public string collectFolder = "collect";
+    
+    private string timeNow => Now.ToString("yyyy-MM-dd_HH-mm-ss");
+    private string homeFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    
+    private string saveFolder => homeFolder + "/" + collectFolder + "/" + timeNow + "_" + saveName + "/";
+    
     public GenerateEnv generateEnv;
     public GenerateRoad generateRoad;
-    
+
     public int generation = 1;
-    public bool DoSave = true;
-    public float RandomizeEvery = 20.0f;
+    public bool save = false;
+    public float RandomizationFrequency = 20.0f;
     public float timesteps = 0.033f;
 
     CarPath carPath;
     CameraSensor cameraSensor;
     float t = 0.0f;
     float counter = 0.0f;
-    
+
     int step = 0;
     public int nbImages = 1000;
-    private int skip = 2;
-    
+    private int skipUpdate = 5; // skip n first Unity update call
+
     void Start()
     {
         carPath = GetComponent<CarPath>();
         cameraSensor = GetComponent<CameraSensor>();
-        
-        
-        if (DoSave)
+
+        Env.Instance.Init();
+
+        if (save)
         {
             if (!System.IO.Directory.Exists(saveFolder))
                 System.IO.Directory.CreateDirectory(saveFolder);
@@ -53,7 +59,7 @@ public class Car : MonoBehaviour
         //TODO: make cleaner
         // if (generateRoad != null)
         //     generateRoad.Start();
-        
+
         if (generateEnv != null)
             generateEnv.Start();
 
@@ -62,14 +68,16 @@ public class Car : MonoBehaviour
 
     void Update()
     {
-        if (skip > 0)
+        // this is used to prevent the script to generate black images
+        // for the first skipUpdate Unity update calls
+        if (skipUpdate > 0)
         {
-            skip--;
+            skipUpdate--;
             return;
         }
-        
+
         counter += timesteps;
-        if (counter > RandomizeEvery)
+        if (counter > RandomizationFrequency)
         {
             Randomize();
             carPath.UpdateTransform(t);
@@ -97,7 +105,7 @@ public class Car : MonoBehaviour
                 return;
             }
 
-            if (DoSave)
+            if (save)
             {
                 string curTime = GetCurrentTime();
                 cameraSensor.SaveImage(saveFolder + curTime + ".png");
@@ -109,6 +117,6 @@ public class Car : MonoBehaviour
 
     public static string GetCurrentTime()
     {
-        return (System.DateTime.UtcNow - epochStart).TotalSeconds.ToString().Replace(",", ".");
+        return (DateTime.UtcNow - epochStart).TotalSeconds.ToString().Replace(",", ".");
     }
 }

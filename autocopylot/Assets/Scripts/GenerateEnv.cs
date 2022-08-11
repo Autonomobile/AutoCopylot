@@ -13,33 +13,34 @@ public class GenerateEnv : MonoBehaviour
 
     public PathCreator RoadSpline;
 
-    public bool doGenerateWalls = true;
+    public bool generateWalls = true;
     public bool randomizeLights = true;
-    public bool doGenerateChairs = false;
+    public bool generateChairs = false;
 
     public Light floorLightObjet;
     public Light ceilLightObject;
-    public float maxAngleSun = 30.0f;
+    
     public Color lowLerpColor = Color.yellow;
     public Color highLerpColor = Color.white;
+    public float maxLightAngle = 30.0f;
     public float lowLerpIntensity = 0.8f;
     public float highLerpIntensity = 1.1f;
 
-    public float ColorProbability = 0.5f;
-    public float LaneAppearProbability = 0.7f;
+    public float materialColorProbability = 0.5f;
+    public float laneAppearProbability = 0.7f;
     
-    public GameObject Chair;
+    public GameObject ChairObject;
     public int numChairs = 20;
 
-    float margin = 2.0f;
-    float wallHeight = 2.5f;
+    private float margin = 2.0f;
+    private float wallHeight = 2.5f;
 
     public void Start()
     {
         if (RoadSpline is null)
             throw new ArgumentNullException("RoadSpline is null.");
 
-        if (doGenerateWalls)
+        if (generateWalls)
         {
             Bounds bounds = RoadSpline.path.bounds;
             bounds.Expand(margin);
@@ -47,15 +48,10 @@ public class GenerateEnv : MonoBehaviour
         }
         
         if (randomizeLights)
-        {
             RandomizeLights();
-        }
 
-        if (doGenerateChairs)
-        {
+        if (generateChairs)
             GenerateChairs(numChairs);
-        }
-
     }
 
     public void DeleteObject(string name)
@@ -65,7 +61,7 @@ public class GenerateEnv : MonoBehaviour
             DestroyImmediate(obj);
     }
 
-    public void DeleteBox()
+    public void DeleteVirtualEnv()
     {
         DeleteObject("Floor");
         DeleteObject("Ceiling");
@@ -73,21 +69,20 @@ public class GenerateEnv : MonoBehaviour
         DeleteObject("Wall 2");
         DeleteObject("Wall 3");
         DeleteObject("Wall 4");
-
     }
 
-    public void Reset()
+    public void ResetEnv()
     {
-        DeleteBox();
+        DeleteVirtualEnv();
     }
 
     public void RandomizeLights()
     {
-        floorLightObjet.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
+        floorLightObjet.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxLightAngle, maxLightAngle), UnityEngine.Random.Range(-maxLightAngle, maxLightAngle), 0);
         floorLightObjet.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
         floorLightObjet.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
 
-        ceilLightObject.transform.rotation = Quaternion.Euler(-90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
+        ceilLightObject.transform.rotation = Quaternion.Euler(-90 + UnityEngine.Random.Range(-maxLightAngle, maxLightAngle), UnityEngine.Random.Range(-maxLightAngle, maxLightAngle), 0);
         ceilLightObject.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
         ceilLightObject.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
     }
@@ -99,7 +94,7 @@ public class GenerateEnv : MonoBehaviour
         {
             Vector3 pos = RoadSpline.path.GetPointAtDistance(UnityEngine.Random.Range(0, RoadSpline.path.length));
             Quaternion rot = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
-            GameObject go = Instantiate(Chair, pos, rot);
+            GameObject go = Instantiate(ChairObject, pos, rot);
             go.transform.parent = transform;
         }
     }
@@ -107,8 +102,6 @@ public class GenerateEnv : MonoBehaviour
 
     public void GenerateBox(Bounds bounds)
     {
-        UpdateRoad();
-        
         float centerx = (bounds.min.x + bounds.max.x) / 2.0f;
         float centery = (bounds.min.y + bounds.max.y) / 2.0f;
         float centerz = (bounds.min.z + bounds.max.z) / 2.0f;
@@ -191,14 +184,14 @@ public class GenerateEnv : MonoBehaviour
 
     Material GetRandomFloorMaterial()
     {
-        if (UnityEngine.Random.value < ColorProbability) return GetRandomColorMaterial();
+        if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
 
         Material[] materials = Resources.LoadAll<Material>(FloorMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
     Material GetRandomWallMaterial()
     {
-        if (UnityEngine.Random.value < ColorProbability) return GetRandomColorMaterial();
+        if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
         
         Material[] materials = Resources.LoadAll<Material>(WallMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
@@ -209,7 +202,7 @@ public class GenerateEnv : MonoBehaviour
         Material[] materials = Resources.LoadAll<Material>(RoadMatFolder);
         
         float random = UnityEngine.Random.value;
-        if (random < LaneAppearProbability)
+        if (random < laneAppearProbability)
         {
             Material lane;
             if (UnityEngine.Random.value < .5f)
