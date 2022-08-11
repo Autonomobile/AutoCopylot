@@ -160,9 +160,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cb00c88107bff0a8894663c03b843968, type: 2}
-  - {fileID: 2100000, guid: c1d8d882244c5344fa86a8fd23246f81, type: 2}
-  - {fileID: 2100000, guid: c1d8d882244c5344fa86a8fd23246f81, type: 2}
+  - {fileID: 2100000, guid: 17700ff906061c73b9e81c9951384831, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -614,7 +612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667686, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.394
       objectReference: {fileID: 0}
     - target: {fileID: 232442690398667686, guid: e982963cf198f1e45bb8ad4577c0d86a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -772,7 +770,7 @@ MonoBehaviour:
   RandomMaterial: 0
   NumPoints: 10
   MinDist: 5
-  Name: rbrl.txt
+  Name: vivatech.txt
   DoBuildRoad: 1
   undersideMaterial: {fileID: 2100000, guid: c1d8d882244c5344fa86a8fd23246f81, type: 2}
   roadWidth: 0.5
