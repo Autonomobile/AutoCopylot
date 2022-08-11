@@ -42,8 +42,6 @@ public class Car : MonoBehaviour
         carPath = GetComponent<CarPath>();
         cameraSensor = GetComponent<CameraSensor>();
 
-        Env.Instance.Init();
-
         if (save)
         {
             if (!System.IO.Directory.Exists(saveFolder))
@@ -63,7 +61,7 @@ public class Car : MonoBehaviour
         if (generateEnv != null)
             generateEnv.Start();
 
-        // carPath.Start(); // do once
+         //carPath.Start(); // do once
     }
 
     void Update()

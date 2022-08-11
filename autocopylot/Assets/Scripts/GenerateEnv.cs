@@ -13,13 +13,14 @@ public class GenerateEnv : MonoBehaviour
 
     public PathCreator RoadSpline;
 
+    [Header("Virtual Env Settings")]
     public bool generateWalls = true;
     public bool randomizeLights = true;
     public bool generateChairs = false;
 
+    [Header("Light Settings")]
     public Light floorLightObjet;
     public Light ceilLightObject;
-    
     public Color lowLerpColor = Color.yellow;
     public Color highLerpColor = Color.white;
     public float maxLightAngle = 30.0f;
@@ -28,14 +29,43 @@ public class GenerateEnv : MonoBehaviour
 
     public float materialColorProbability = 0.5f;
     public float laneAppearProbability = 0.7f;
-    
+
     public GameObject ChairObject;
     public int numChairs = 20;
 
-    private float margin = 2.0f;
-    private float wallHeight = 2.5f;
+    float margin = 2.0f;
+    float wallHeight = 2.5f;
+
+    string floorObjectName = "Floor";
+    string ceilObjectName = "Ceiling";
+    string wallObjectName1 = "Wall 1";
+    string wallObjectName2 = "Wall 2";
+    string wallObjectName3 = "Wall 3";
+    string wallObjectName4 = "Wall 4";
+
+
+    void InitEnvVariables()
+    {
+        generateWalls = Env.Instance.generateWalls;
+        randomizeLights = Env.Instance.randomizeLights;
+        generateChairs = Env.Instance.generateChairs;
+        lowLerpColor = Env.Instance.lowLerpColor;
+        highLerpColor = Env.Instance.highLerpColor;
+        maxLightAngle = Env.Instance.maxLightAngle;
+        lowLerpIntensity = Env.Instance.lowLerpIntensity;
+        highLerpIntensity = Env.Instance.highLerpIntensity;
+        materialColorProbability = Env.Instance.materialColorProbability;
+        laneAppearProbability = Env.Instance.laneAppearProbability;
+    }
+
 
     public void Start()
+    {
+        InitEnvVariables();
+        GenerateVirtualEnv();
+    }
+
+    public void GenerateVirtualEnv()
     {
         if (RoadSpline is null)
             throw new ArgumentNullException("RoadSpline is null.");
@@ -46,7 +76,7 @@ public class GenerateEnv : MonoBehaviour
             bounds.Expand(margin);
             GenerateBox(bounds);
         }
-        
+
         if (randomizeLights)
             RandomizeLights();
 
@@ -63,12 +93,12 @@ public class GenerateEnv : MonoBehaviour
 
     public void DeleteVirtualEnv()
     {
-        DeleteObject("Floor");
-        DeleteObject("Ceiling");
-        DeleteObject("Wall 1");
-        DeleteObject("Wall 2");
-        DeleteObject("Wall 3");
-        DeleteObject("Wall 4");
+        DeleteObject(floorObjectName);
+        DeleteObject(ceilObjectName);
+        DeleteObject(wallObjectName1);
+        DeleteObject(wallObjectName2);
+        DeleteObject(wallObjectName3);
+        DeleteObject(wallObjectName4);
     }
 
     public void ResetEnv()
@@ -99,27 +129,25 @@ public class GenerateEnv : MonoBehaviour
         }
     }
 
-
     public void GenerateBox(Bounds bounds)
     {
         float centerx = (bounds.min.x + bounds.max.x) / 2.0f;
-        float centery = (bounds.min.y + bounds.max.y) / 2.0f;
         float centerz = (bounds.min.z + bounds.max.z) / 2.0f;
         
         // floor
-        CreateFloor(centerx, centerz, bounds.size.z, bounds.size.x, "Floor");
+        GenerateFloor(centerx, centerz, bounds.size.z, bounds.size.x, floorObjectName);
         
         // ceiling
-        CreateCeiling(centerx, wallHeight, bounds.size.z, bounds.size.x, "Ceiling");
+        GenerateCeiling(centerx, wallHeight, bounds.size.z, bounds.size.x, ceilObjectName);
 
         // walls
-        CreateWall(bounds.min.x, centerz, bounds.size.z, wallHeight, Vector3.down, Vector3.right, "Wall 1");
-        CreateWall(bounds.max.x, centerz, bounds.size.z, wallHeight, Vector3.down, Vector3.left, "Wall 2");
-        CreateWall(centerx, bounds.min.z, bounds.size.x, wallHeight, Vector3.down, Vector3.forward, "Wall 3");
-        CreateWall(centerx, bounds.max.z, bounds.size.x, wallHeight, Vector3.down, Vector3.back, "Wall 4");
+        GenerateWall(bounds.min.x, centerz, bounds.size.z, wallHeight, Vector3.right, wallObjectName1);
+        GenerateWall(bounds.max.x, centerz, bounds.size.z, wallHeight, Vector3.left, wallObjectName2);
+        GenerateWall(centerx, bounds.min.z, bounds.size.x, wallHeight, Vector3.forward, wallObjectName3);
+        GenerateWall(centerx, bounds.max.z, bounds.size.x, wallHeight, Vector3.back, wallObjectName4);
     }
     
-    public void CreateFloor(float x, float y, float xsize, float ysize, string name)
+    public void GenerateFloor(float x, float y, float xsize, float ysize, string name)
     {
         GameObject plane = GameObject.Find(name);
         if (plane is null)
@@ -136,24 +164,7 @@ public class GenerateEnv : MonoBehaviour
         plane.GetComponent<Renderer>().material = GetRandomFloorMaterial();
     }
 
-    public void CreateWall(float x, float y, float xsize, float ysize, Vector3 forward, Vector3 upwards, string name)
-    {
-        GameObject wall = GameObject.Find(name);
-        if (wall is null)
-        {
-            wall = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            wall.name = name;
-            wall.AddComponent<BoxCollider>();
-        }
-
-        wall.transform.parent = transform;
-        wall.transform.localScale = new Vector3(xsize / 10.0f, 1, ysize / 10.0f);
-        wall.transform.position = new Vector3(x, ysize / 2.0f, y);
-        wall.transform.rotation = Quaternion.LookRotation(forward, upwards);
-        wall.GetComponent<MeshRenderer>().material = GetRandomWallMaterial();
-    }
-    
-    public void CreateCeiling(float x, float y, float xsize, float ysize, string name)
+    public void GenerateCeiling(float x, float y, float xsize, float ysize, string name)
     {
         GameObject plane = GameObject.Find(name);
         if (plane is null)
@@ -171,14 +182,36 @@ public class GenerateEnv : MonoBehaviour
         plane.GetComponent<Renderer>().material = GetRandomFloorMaterial();
     }
 
+    public void GenerateWall(float x, float y, float xsize, float ysize, Vector3 upwards, string name)
+    {
+        GameObject wall = GameObject.Find(name);
+        if (wall is null)
+        {
+            wall = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            wall.name = name;
+            wall.AddComponent<BoxCollider>();
+        }
 
-    public void UpdateRoad()
+        wall.transform.parent = transform;
+        wall.transform.localScale = new Vector3(xsize / 10.0f, 1, ysize / 10.0f);
+        wall.transform.position = new Vector3(x, ysize / 2.0f, y);
+        wall.transform.rotation = Quaternion.LookRotation(Vector3.down, upwards);
+        wall.GetComponent<MeshRenderer>().material = GetRandomWallMaterial();
+    }
+    
+    public void UpdateRoadMaterial()
     {
         GameObject road = GameObject.Find("Road Mesh Holder");        
-
-        if (road is null)
-            return;
+        if (road is null) return;
         
+        road.GetComponent<MeshRenderer>().material = GetRandomRoadMaterial();
+    }
+
+    void ResetRoadMaterial()
+    {
+        GameObject road = GameObject.Find("Road Mesh Holder");
+        if (road is null) return;
+
         road.GetComponent<MeshRenderer>().material = GetRandomRoadMaterial();
     }
 
@@ -189,6 +222,7 @@ public class GenerateEnv : MonoBehaviour
         Material[] materials = Resources.LoadAll<Material>(FloorMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
+    
     Material GetRandomWallMaterial()
     {
         if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
