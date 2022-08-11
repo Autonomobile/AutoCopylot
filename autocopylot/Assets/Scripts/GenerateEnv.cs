@@ -14,11 +14,11 @@ public class GenerateEnv : MonoBehaviour
     public PathCreator RoadSpline;
 
     public bool doGenerateWalls = true;
-    public bool doRandomizeSun = true;
+    public bool randomizeLights = true;
     public bool doGenerateChairs = false;
 
-    public Light Sun;
-    public Light light;
+    public Light floorLightObjet;
+    public Light ceilLightObject;
     public float maxAngleSun = 30.0f;
     public Color lowLerpColor = Color.yellow;
     public Color highLerpColor = Color.white;
@@ -46,9 +46,9 @@ public class GenerateEnv : MonoBehaviour
             GenerateBox(bounds);
         }
         
-        if (doRandomizeSun)
+        if (randomizeLights)
         {
-            SunRandomization();
+            RandomizeLights();
         }
 
         if (doGenerateChairs)
@@ -58,15 +58,38 @@ public class GenerateEnv : MonoBehaviour
 
     }
 
-    public void SunRandomization()
+    public void DeleteObject(string name)
     {
-        Sun.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
-        Sun.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
-        Sun.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
+        GameObject obj = GameObject.Find(name);
+        if (obj != null)
+            DestroyImmediate(obj);
+    }
 
-        light.transform.rotation = Quaternion.Euler(-90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
-        light.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
-        light.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
+    public void DeleteBox()
+    {
+        DeleteObject("Floor");
+        DeleteObject("Ceiling");
+        DeleteObject("Wall 1");
+        DeleteObject("Wall 2");
+        DeleteObject("Wall 3");
+        DeleteObject("Wall 4");
+
+    }
+
+    public void Reset()
+    {
+        DeleteBox();
+    }
+
+    public void RandomizeLights()
+    {
+        floorLightObjet.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
+        floorLightObjet.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
+        floorLightObjet.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
+
+        ceilLightObject.transform.rotation = Quaternion.Euler(-90 + UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), UnityEngine.Random.Range(-maxAngleSun, maxAngleSun), 0);
+        ceilLightObject.color = Color.Lerp(highLerpColor, lowLerpColor, UnityEngine.Random.value);
+        ceilLightObject.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
     }
 
     public void GenerateChairs(int num)
@@ -87,10 +110,11 @@ public class GenerateEnv : MonoBehaviour
         UpdateRoad();
         
         float centerx = (bounds.min.x + bounds.max.x) / 2.0f;
+        float centery = (bounds.min.y + bounds.max.y) / 2.0f;
         float centerz = (bounds.min.z + bounds.max.z) / 2.0f;
         
         // floor
-        CreateFloor(centerx, centerz, bounds.size.z, bounds.size.x, Vector3.right, "Floor");
+        CreateFloor(centerx, centerz, bounds.size.z, bounds.size.x, "Floor");
         
         // ceiling
         CreateCeiling(centerx, wallHeight, bounds.size.z, bounds.size.x, "Ceiling");
@@ -102,7 +126,7 @@ public class GenerateEnv : MonoBehaviour
         CreateWall(centerx, bounds.max.z, bounds.size.x, wallHeight, Vector3.down, Vector3.back, "Wall 4");
     }
     
-    public void CreateFloor(float x, float y, float xsize, float ysize, Vector3 Orientation, string name)
+    public void CreateFloor(float x, float y, float xsize, float ysize, string name)
     {
         GameObject plane = GameObject.Find(name);
         if (plane is null)
@@ -115,7 +139,7 @@ public class GenerateEnv : MonoBehaviour
         plane.transform.parent = transform;
         plane.transform.localScale = new Vector3(xsize / 10.0f, 1, ysize / 10.0f);
         plane.transform.position = new Vector3(x, 0, y);
-        plane.transform.rotation = Quaternion.LookRotation(Orientation);
+        plane.transform.rotation = Quaternion.LookRotation(Vector3.right);
         plane.GetComponent<Renderer>().material = GetRandomFloorMaterial();
     }
 
