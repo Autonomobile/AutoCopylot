@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(UnityEngine.Camera))]
 public class DomeProjection : MonoBehaviour
 {
     // The DomeProjection is an image effect script that takes care of rendering the fisheye image from a
@@ -29,12 +29,12 @@ public class DomeProjection : MonoBehaviour
 
         m_controller = GetComponentInParent<DomeController>();
         if (m_controller == null)
-            Debug.LogError("DomeProjection: Cannot find controller! Reverting the Dome Projector prefab will probably fix this error."); 
+            Debug.LogError("DomeProjection: Cannot find controller! Reverting the Dome Projector prefab will probably fix this error.");
 
         // Configure camera for optimal performance:
         // - Don't clear (dome projection will render all pixels)
         // - Cull everything (dome projection will cover entire view)
-        Camera camera = GetComponent<Camera>();
+        UnityEngine.Camera camera = GetComponent<UnityEngine.Camera>();
         camera.clearFlags = CameraClearFlags.Nothing;
         camera.cullingMask = 0;
 

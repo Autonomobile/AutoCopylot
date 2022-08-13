@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Env))]
+[CustomEditor(typeof(ENV))]
 public class EnvEditor : Editor
 {
-    private Env script;
+    private ENV script;
 
     private void OnEnable()
     {
-        script = (Env)target;
+        script = (ENV)target;
     }
 
     public override void OnInspectorGUI()

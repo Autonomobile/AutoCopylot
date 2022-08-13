@@ -19,8 +19,8 @@ public class Car : MonoBehaviour {
 
     private string saveFolder => homeFolder + "/" + collectFolder + "/" + timeNow + "_" + saveName + "/";
 
-    public GenerateEnv generateEnv;
-    public GenerateRoad generateRoad;
+    public EnvGenerator generateEnv;
+    public RoadGenerator generateRoad;
 
     public int generation = 1;
     public bool save = false;
@@ -29,6 +29,7 @@ public class Car : MonoBehaviour {
 
     CarPath carPath;
     CameraSensor cameraSensor;
+
     float t = 0.0f;
     float counter = 0.0f;
 

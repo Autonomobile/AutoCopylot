@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEditor;
 using PathCreation;
 
-public class GenerateEnv : MonoBehaviour
+public class EnvGenerator : MonoBehaviour
 {
-    public string MaterialsFolder => "Materials/Materials/";
+    public string TextureFolder => "Materials/Materials/";
     public string RoadMatFolder => "Roads/Materials/";
 
     public PathCreator RoadSpline;
@@ -45,18 +45,17 @@ public class GenerateEnv : MonoBehaviour
 
     void InitEnvVariables()
     {
-        generateWalls = Env.Instance.generateWalls;
-        randomizeLights = Env.Instance.randomizeLights;
-        generateChairs = Env.Instance.generateChairs;
-        lowLerpColor = Env.Instance.lowLerpColor;
-        highLerpColor = Env.Instance.highLerpColor;
-        maxLightAngle = Env.Instance.maxLightAngle;
-        lowLerpIntensity = Env.Instance.lowLerpIntensity;
-        highLerpIntensity = Env.Instance.highLerpIntensity;
-        materialColorProbability = Env.Instance.materialColorProbability;
-        laneAppearProbability = Env.Instance.laneAppearProbability;
+        generateWalls = ENV.Instance.generateWalls;
+        randomizeLights = ENV.Instance.randomizeLights;
+        generateChairs = ENV.Instance.generateChairs;
+        lowLerpColor = ENV.Instance.lowLerpColor;
+        highLerpColor = ENV.Instance.highLerpColor;
+        maxLightAngle = ENV.Instance.maxLightAngle;
+        lowLerpIntensity = ENV.Instance.lowLerpIntensity;
+        highLerpIntensity = ENV.Instance.highLerpIntensity;
+        materialColorProbability = ENV.Instance.materialColorProbability;
+        laneAppearProbability = ENV.Instance.laneAppearProbability;
     }
-
 
     public void Start()
     {
@@ -105,6 +104,9 @@ public class GenerateEnv : MonoBehaviour
         DeleteVirtualEnv();
     }
 
+    /// <summary>
+    /// Modify rotation of lights
+    /// </summary>
     public void RandomizeLights()
     {
         floorLightObjet.transform.rotation = Quaternion.Euler(90 + UnityEngine.Random.Range(-maxLightAngle, maxLightAngle), UnityEngine.Random.Range(-maxLightAngle, maxLightAngle), 0);
@@ -116,11 +118,14 @@ public class GenerateEnv : MonoBehaviour
         ceilLightObject.intensity = Mathf.Lerp(lowLerpIntensity, highLerpIntensity, UnityEngine.Random.value);
     }
 
-    public void GenerateChairs(int num)
-    {
-        // TODO
-        for (int i = 0; i < num; i++)
-        {
+    #region virtual env generation
+
+    /// <summary>
+    /// Generate chairs
+    /// </summary>
+    /// <param name="num"></param>
+    public void GenerateChairs(int num) {
+        for (int i = 0; i < num; i++) {
             Vector3 pos = RoadSpline.path.GetPointAtDistance(UnityEngine.Random.Range(0, RoadSpline.path.length));
             Quaternion rot = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
             GameObject go = Instantiate(ChairObject, pos, rot);
@@ -128,6 +133,10 @@ public class GenerateEnv : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Generate walls, floor and ceiling
+    /// </summary>
+    /// <param name="bounds"></param>
     public void GenerateBox(Bounds bounds)
     {
         float centerx = (bounds.min.x + bounds.max.x) / 2.0f;
@@ -145,7 +154,15 @@ public class GenerateEnv : MonoBehaviour
         GenerateWall(centerx, bounds.min.z, bounds.size.x, wallHeight, Vector3.forward, wallObjectName3);
         GenerateWall(centerx, bounds.max.z, bounds.size.x, wallHeight, Vector3.back, wallObjectName4);
     }
-    
+
+    /// <summary>
+    /// Generate floor
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="xsize"></param>
+    /// <param name="ysize"></param>
+    /// <param name="name"></param>
     public void GenerateFloor(float x, float y, float xsize, float ysize, string name)
     {
         GameObject plane = GameObject.Find(name);
@@ -160,9 +177,17 @@ public class GenerateEnv : MonoBehaviour
         plane.transform.localScale = new Vector3(xsize / 10.0f, 1, ysize / 10.0f);
         plane.transform.position = new Vector3(x, 0, y);
         plane.transform.rotation = Quaternion.LookRotation(Vector3.right);
-        plane.GetComponent<Renderer>().material = GetRandomFloorMaterial();
+        plane.GetComponent<Renderer>().material = RandomTexture();
     }
 
+    /// <summary>
+    /// Generate Ceilling
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="xsize"></param>
+    /// <param name="ysize"></param>
+    /// <param name="name"></param>
     public void GenerateCeiling(float x, float y, float xsize, float ysize, string name)
     {
         GameObject plane = GameObject.Find(name);
@@ -178,9 +203,18 @@ public class GenerateEnv : MonoBehaviour
         plane.transform.position = new Vector3(x, y, 0);
         plane.transform.rotation = Quaternion.LookRotation(Vector3.right);
         plane.transform.Rotate(0, 0, 180);
-        plane.GetComponent<Renderer>().material = GetRandomFloorMaterial();
+        plane.GetComponent<Renderer>().material = RandomTexture();
     }
 
+    /// <summary>
+    /// Generate Walls
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="xsize"></param>
+    /// <param name="ysize"></param>
+    /// <param name="upwards"></param>
+    /// <param name="name"></param>
     public void GenerateWall(float x, float y, float xsize, float ysize, Vector3 upwards, string name)
     {
         GameObject wall = GameObject.Find(name);
@@ -195,9 +229,14 @@ public class GenerateEnv : MonoBehaviour
         wall.transform.localScale = new Vector3(xsize / 10.0f, 1, ysize / 10.0f);
         wall.transform.position = new Vector3(x, ysize / 2.0f, y);
         wall.transform.rotation = Quaternion.LookRotation(Vector3.down, upwards);
-        wall.GetComponent<MeshRenderer>().material = GetRandomWallMaterial();
+        wall.GetComponent<MeshRenderer>().material = RandomTexture();
     }
-    
+
+    #endregion
+
+    /// <summary>
+    /// Set new material for the road
+    /// </summary>
     public void UpdateRoadMaterial()
     {
         GameObject road = GameObject.Find("Road Mesh Holder");        
@@ -206,54 +245,66 @@ public class GenerateEnv : MonoBehaviour
         road.GetComponent<MeshRenderer>().material = GetRandomRoadMaterial();
     }
 
-    void ResetRoadMaterial()
-    {
-        GameObject road = GameObject.Find("Road Mesh Holder");
-        if (road is null) return;
-
-        road.GetComponent<MeshRenderer>().material = GetRandomRoadMaterial();
+    /// <summary>
+    /// Returns a random Color
+    /// </summary>
+    /// <returns></returns>
+    public Material RandomColor() {
+        Material mat = new Material(Shader.Find("Standard"));
+        mat.color = UnityEngine.Random.ColorHSV();
+        return mat;
     }
 
-    Material GetRandomFloorMaterial()
+    /// <summary>
+    /// Get random material from list of materials
+    /// </summary>
+    /// <returns></returns>
+    public Material RandomTexture()
     {
-        if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
+        if (UnityEngine.Random.value < materialColorProbability) {
+            return RandomColor();
+        }
 
-        Material[] materials = Resources.LoadAll<Material>(MaterialsFolder);
+        Material[] materials = Resources.LoadAll<Material>(TextureFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
-    
-    Material GetRandomWallMaterial()
-    {
-        if (UnityEngine.Random.value < materialColorProbability) return GetRandomColorMaterial();
-        
-        Material[] materials = Resources.LoadAll<Material>(MaterialsFolder);
-        return materials[UnityEngine.Random.Range(0, materials.Length)];
-    }
 
-    Material GetRandomRoadMaterial()
+    /// <summary>
+    /// Get Random Road Material
+    /// </summary>
+    /// <returns></returns>
+    public Material GetRandomRoadMaterial()
     {
         Material[] materials = Resources.LoadAll<Material>(RoadMatFolder);
-        
         float random = UnityEngine.Random.value;
+        
         if (random < laneAppearProbability)
         {
             Material lane;
+        
             if (UnityEngine.Random.value < .5f)
                 lane =  materials[0];
             else 
                 lane = materials[1];
-            
-            lane.color = UnityEngine.Random.ColorHSV();
-            return lane;
+
+            Material copy = new Material(lane);
+            copy.color = UnityEngine.Random.ColorHSV();
+            return copy;
         }
         
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
 
-    Material GetRandomColorMaterial()
-    {
-        Material mat = new Material(Shader.Find("Standard"));
-        mat.color = UnityEngine.Random.ColorHSV();
-        return mat;
+    /// <summary>
+    /// Set white lane as default material
+    /// </summary>
+    public void SetDefaultMaterial() {
+        GameObject road = GameObject.Find("Road Mesh Holder");
+        if (road is null) return;
+
+        Material[] materials = Resources.LoadAll<Material>(TextureFolder);
+        road.GetComponent<MeshRenderer>().material = materials[1];
     }
+
+    
 }

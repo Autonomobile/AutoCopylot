@@ -122,9 +122,9 @@ public class DomeController : MonoBehaviour
 	// PUBLIC
 	//----------------------------------------------------------------------------------------------------
 
-	public Camera projectionCamera { get { return m_projectionCamera; } }
+	public UnityEngine.Camera projectionCamera { get { return m_projectionCamera; } }
 
-    public Camera worldCamera { get { return m_worldCamera; } }
+    public UnityEngine.Camera worldCamera { get { return m_worldCamera; } }
 
     //----------------------------------------------------------------------------------------------------
     // UNITY EVENTS
@@ -148,7 +148,7 @@ public class DomeController : MonoBehaviour
         Transform projectionCameraTrans = transform.Find("Projection Camera");
         if (projectionCameraTrans == null)
             Debug.LogError(ProjectionCameraMissingError);
-        m_projectionCamera = projectionCameraTrans.GetComponent<Camera>();
+        m_projectionCamera = projectionCameraTrans.GetComponent<UnityEngine.Camera>();
         if (m_projectionCamera == null)
             Debug.LogError(ProjectionCameraMissingError);
 
@@ -160,7 +160,7 @@ public class DomeController : MonoBehaviour
         Transform worldCameraTrans = transform.Find("World Camera");
         if (worldCameraTrans == null)
             Debug.LogError(WorldCameraMissingError);
-        m_worldCamera = worldCameraTrans.GetComponent<Camera>();
+        m_worldCamera = worldCameraTrans.GetComponent<UnityEngine.Camera>();
         if (m_worldCamera == null)
             Debug.LogError(WorldCameraMissingError);
 
@@ -493,10 +493,10 @@ public class DomeController : MonoBehaviour
 	}
 
 	// The projection camera is the camera that is used to render the final fisheye image.
-	private Camera m_projectionCamera;
+	private UnityEngine.Camera m_projectionCamera;
 
     // The world camera is the camera that is used to capture a cubemap of the scene every frame.
-    private Camera m_worldCamera;
+    private UnityEngine.Camera m_worldCamera;
 
 	// Camera properties
 	private float m_initialWorldCameraPitch = 0.0f;

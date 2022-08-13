@@ -5,17 +5,14 @@ using System.IO;
 using UnityEngine;
 using PathCreation;
 
-public class GenerateRoad : MonoBehaviour
-{
+public class RoadGenerator : MonoBehaviour {
     public string RoadSplineFolder => "Assets/Resources/RoadSplines/";
     public string TrajectorySplineFolder => "Assets/Resources/TrajectorySplines/";
     public string RoadMatFolder => "Roads/Materials/";
 
-
     [Header("PathCreators")]
     public PathCreator RoadSpline;
     public PathCreator TrajectorySpline;
-
 
     [Header("Spline Loader")]
     public bool RandomTrack = false;
@@ -24,7 +21,6 @@ public class GenerateRoad : MonoBehaviour
     public int NumPoints = 10;
     public float MinDist = 3.0f;
     public string Name = "spline.txt";
-
 
     [Header("Road Builder")]
     public bool DoBuildRoad = true;
@@ -39,117 +35,126 @@ public class GenerateRoad : MonoBehaviour
     [SerializeField, HideInInspector]
     GameObject meshHolder;
 
-
-    public void Start()
-    {
+    public void Start() {
         if (RoadSpline is null || TrajectorySpline is null)
             throw new ArgumentNullException("One of the splines is null.");
 
-        if (RandomTrack)
-        {
+        if (RandomTrack) {
             if (LoadTrack)
                 LoadRandomSplines();
             else
                 GenerateSplines();
-        }
-        else if (LoadTrack)
+        } else if (LoadTrack)
             LoadSplines(Name);
     }
 
-    public static void ApplyPath(PathCreator spline, Vector3[] waypoints)
-    {
-        BezierPath bezierPath = new BezierPath(waypoints, true, PathSpace.xz);
-        spline.bezierPath = bezierPath;
-    }
+    #region IO
 
-    public Vector3[] RandomPoints()
-    {
-        Vector3[] waypoints = new Vector3[NumPoints];
-        for (int i = 0; i < NumPoints; i++)
-        {
-            waypoints[i] = Vector3.zero;
-            if (i > 0)
-            {
-                waypoints[i] = waypoints[i - 1];
-                while (Vector3.Distance(waypoints[i - 1], waypoints[i]) < MinDist)
-                    waypoints[i] += new Vector3(UnityEngine.Random.Range(-5.0f, 5.0f), 0, UnityEngine.Random.Range(-5.0f, 5.0f));
-            }
-        }
-        return waypoints;
-    }
-
-
-    public static void SavePath(PathCreator spline, string path)
-    {
+    /// <summary>
+    /// Save a spline to a file
+    /// </summary>
+    /// <param name="spline"></param>
+    /// <param name="path"></param>
+    public static void SavePath(PathCreator spline, string path) {
         int numPoints = spline.bezierPath.NumPoints;
         string[] lines = new string[numPoints];
-        for (int i = 0; i < numPoints; i++)
-        {
+
+        for (int i = 0; i < numPoints; i++) {
             Vector3 waypoint = spline.bezierPath.GetPoint(i);
             string line = $"{waypoint.x} {waypoint.y} {waypoint.z}";
             lines[i] = line;
         }
-        System.IO.File.WriteAllLines(path, lines);
+        File.WriteAllLines(path, lines);
     }
 
-    public static void LoadPath(PathCreator spline, string path)
-    {
-        string[] lines = System.IO.File.ReadAllLines(path);
+    /// <summary>
+    /// Load a spline from a file
+    /// </summary>
+    /// <param name="spline"></param>
+    /// <param name="path"></param>
+    public static void LoadPath(PathCreator spline, string path) {
+        string[] lines = File.ReadAllLines(path);
         int length = lines.Length / 3;
         Vector3[] waypoints = new Vector3[length];
-        for (int i = 0; i < length; i++)
-        {
+
+        for (int i = 0; i < length; i++) {
             string[] line = lines[i * 3].Split(' ');
-            waypoints[i] = new Vector3(float.Parse(line[0]), float.Parse(line[1]), float.Parse(line[2]));
+            float x = float.Parse(line[0]);
+            float y = float.Parse(line[1]);
+            float z = float.Parse(line[2]);
+            waypoints[i] = new Vector3(x, y, z);
         }
+
         ApplyPath(spline, waypoints);
     }
 
-    public void LoadSplines(string name)
-    {
+    #endregion
+
+    #region splines loader
+
+    /// <summary>
+    /// Load Splines, then update path
+    /// </summary>
+    /// <param name="name"></param>
+    public void LoadSplines(string name) {
         LoadPath(RoadSpline, RoadSplineFolder + name);
         LoadPath(TrajectorySpline, TrajectorySplineFolder + name);
+
         PathUpdated();
     }
 
-    public void LoadRandomSplines()
-    {
+    /// <summary>
+    /// Load random splines from ressourses, then update path
+    /// </summary>
+    public void LoadRandomSplines() {
         string[] roadPaths = Directory.GetFiles(RoadSplineFolder, "*.txt");
         string[] trajPaths = Directory.GetFiles(RoadSplineFolder, "*.txt");
 
         int roadIndex = UnityEngine.Random.Range(0, roadPaths.Length);
+
         LoadPath(RoadSpline, roadPaths[roadIndex]);
         LoadPath(TrajectorySpline, trajPaths[roadIndex]);
+
         PathUpdated();
     }
 
-    public void GenerateSplines()
-    {
+    /// <summary>
+    /// Generate random splines, then update path
+    /// </summary>
+    public void GenerateSplines() {
         Vector3[] points = RandomPoints();
-        GenerateRoad.ApplyPath(RoadSpline, points);
-        GenerateRoad.ApplyPath(TrajectorySpline, points);
+
+        ApplyPath(RoadSpline, points);
+        ApplyPath(TrajectorySpline, points);
+
         PathUpdated();
     }
 
+    #endregion
 
-    private void PathUpdated()
-    {
-        if (DoBuildRoad && RoadSpline != null)
-        {
+    #region splines builder
+
+    /// <summary>
+    /// Update the path, build the road
+    /// </summary>
+    private void PathUpdated() {
+        if (DoBuildRoad && RoadSpline != null) {
             AssignMeshComponents();
-            AssignMaterials();
+            AssignMeshRendererMaterials();
             BuildRoad();
         }
     }
 
-    private void BuildRoad()
-    {
+    /// <summary>
+    /// Build road with texture and underside.
+    /// </summary>
+    private void BuildRoad() {
         VertexPath path = RoadSpline.path;
         Vector3[] verts = new Vector3[path.NumPoints * 8];
         Vector2[] uvs = new Vector2[verts.Length];
         Vector3[] normals = new Vector3[verts.Length];
 
-        int numTris = 2 * (path.NumPoints - 1) + ((path.isClosedLoop) ? 2 : 0);
+        int numTris = 2 * (path.NumPoints - 1) + (path.isClosedLoop ? 2 : 0);
         int[] roadTriangles = new int[numTris * 3];
         int[] underRoadTriangles = new int[numTris * 3];
         int[] sideOfRoadTriangles = new int[numTris * 2 * 3];
@@ -166,8 +171,7 @@ public class GenerateRoad : MonoBehaviour
 
         bool usePathNormals = !(path.space == PathSpace.xyz);
 
-        for (int i = 0; i < path.NumPoints; i++)
-        {
+        for (int i = 0; i < path.NumPoints; i++) {
             Vector3 localUp = (usePathNormals) ? Vector3.Cross(path.GetTangent(i), path.GetNormal(i)) : path.up;
             Vector3 localRight = (usePathNormals) ? path.GetNormal(i) : Vector3.Cross(localUp, path.GetTangent(i));
 
@@ -205,16 +209,13 @@ public class GenerateRoad : MonoBehaviour
             normals[vertIndex + 7] = localRight;
 
             // Set triangle indices
-            if (i < path.NumPoints - 1 || path.isClosedLoop)
-            {
-                for (int j = 0; j < triangleMap.Length; j++)
-                {
+            if (i < path.NumPoints - 1 || path.isClosedLoop) {
+                for (int j = 0; j < triangleMap.Length; j++) {
                     roadTriangles[triIndex + j] = (vertIndex + triangleMap[j]) % verts.Length;
                     // reverse triangle map for under road so that triangles wind the other way and are visible from underneath
                     underRoadTriangles[triIndex + j] = (vertIndex + triangleMap[triangleMap.Length - 1 - j] + 2) % verts.Length;
                 }
-                for (int j = 0; j < sidesTriangleMap.Length; j++)
-                {
+                for (int j = 0; j < sidesTriangleMap.Length; j++) {
                     sideOfRoadTriangles[triIndex * 2 + j] = (vertIndex + sidesTriangleMap[j]) % verts.Length;
                 }
 
@@ -234,11 +235,50 @@ public class GenerateRoad : MonoBehaviour
         RoadMesh.SetTriangles(sideOfRoadTriangles, 2);
         RoadMesh.RecalculateBounds();
     }
-    private void AssignMeshComponents()
-    {
 
-        if (meshHolder == null)
-        {
+    /// <summary>
+    /// Build a spline from a list of points
+    /// </summary>
+    /// <param name="spline"></param>
+    /// <param name="waypoints"></param>
+    public static void ApplyPath(PathCreator spline, Vector3[] waypoints) {
+        BezierPath bezierPath = new BezierPath(waypoints, true, PathSpace.xz);
+        spline.bezierPath = bezierPath;
+    }
+
+    /// <summary>
+    /// Generates a list of random points which form a spline
+    /// </summary>
+    /// <returns></returns>
+    public Vector3[] RandomPoints() {
+        Vector3[] waypoints = new Vector3[NumPoints];
+
+        for (int i = 0; i < NumPoints; i++) {
+            waypoints[i] = Vector3.zero;
+            if (i > 0) {
+                waypoints[i] = waypoints[i - 1];
+
+                while (Vector3.Distance(waypoints[i - 1], waypoints[i]) < MinDist) {
+                    float a = UnityEngine.Random.Range(-5.0f, 5.0f);
+                    float b = UnityEngine.Random.Range(-5.0f, 5.0f);
+                    waypoints[i] += new Vector3(a, 0, b);
+                }
+            }
+        }
+
+        return waypoints;
+    }
+
+    #endregion
+
+    #region Mesh
+
+    /// <summary>
+    /// Assigns mesh filter and mesh renderer to the mesh holder game object.
+    /// </summary>
+    private void AssignMeshComponents() {
+
+        if (meshHolder == null) {
             meshHolder = new GameObject("Road Mesh Holder");
         }
 
@@ -246,40 +286,45 @@ public class GenerateRoad : MonoBehaviour
         meshHolder.transform.position = Vector3.zero + Vector3.up * 0.001f;
         meshHolder.transform.localScale = new Vector3(1, 0.001f, 1);
 
-
         // Ensure mesh renderer and filter components are assigned
-        if (!meshHolder.gameObject.GetComponent<MeshFilter>())
-        {
+        if (!meshHolder.gameObject.GetComponent<MeshFilter>()) {
             meshHolder.gameObject.AddComponent<MeshFilter>();
         }
-        if (!meshHolder.GetComponent<MeshRenderer>())
-        {
+
+        if (!meshHolder.GetComponent<MeshRenderer>()) {
             meshHolder.gameObject.AddComponent<MeshRenderer>();
         }
 
         meshRenderer = meshHolder.GetComponent<MeshRenderer>();
         meshFilter = meshHolder.GetComponent<MeshFilter>();
-        if (RoadMesh == null)
-        {
+
+        if (RoadMesh == null) {
             RoadMesh = new Mesh();
         }
+
         meshFilter.sharedMesh = RoadMesh;
     }
 
-    private void AssignMaterials()
-    {
-        if (RandomMaterial && undersideMaterial != null)
-        {
-            meshRenderer.sharedMaterials = new Material[] { GetRandomMaterial(), undersideMaterial, undersideMaterial };
-            meshRenderer.sharedMaterials[0].mainTextureScale = new Vector3(1, RoadSpline.path.length);
+    /// <summary>
+    /// Assigns the materials to the mesh renderer
+    /// </summary>
+    private void AssignMeshRendererMaterials() {
+        if (RandomMaterial && undersideMaterial != null) {
+            //meshRenderer.sharedMaterials = new Material[] { GetRandomMaterial(), undersideMaterial, undersideMaterial };
+            //meshRenderer.sharedMaterials[0].mainTextureScale = new Vector3(1, RoadSpline.path.length);
+            meshRenderer.sharedMaterial = GetRandomMaterial();
+            meshRenderer.sharedMaterial.mainTextureScale = new Vector3(1, RoadSpline.path.length);
         }
     }
 
-    Material GetRandomMaterial()
-    {
+    #endregion
+
+    /// <summary>
+    /// Gets a random material from Resources
+    /// </summary>
+    /// <returns></returns>
+    Material GetRandomMaterial() {
         Material[] materials = Resources.LoadAll<Material>(RoadMatFolder);
         return materials[UnityEngine.Random.Range(0, materials.Length)];
     }
-
-
 }

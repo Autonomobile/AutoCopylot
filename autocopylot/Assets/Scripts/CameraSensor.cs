@@ -4,22 +4,19 @@ using Unity.Collections;
 using UnityEngine;
 using System;
 
-public class CameraSensor : MonoBehaviour
-{
+public class CameraSensor : MonoBehaviour {
     public RenderTexture renderTexture;
     Texture2D texture;
     int textureWidth;
     int textureHeight;
 
-    void Start()
-    {
+    void Start() {
         textureWidth = renderTexture.width;
         textureHeight = renderTexture.height;
         texture = new Texture2D(textureWidth - 80, textureHeight - 80, TextureFormat.RGB24, false);
     }
 
-    Texture2D GetImage()
-    {
+    Texture2D GetImage() {
         var currentRT = RenderTexture.active;
         RenderTexture.active = renderTexture;
 
@@ -30,8 +27,7 @@ public class CameraSensor : MonoBehaviour
     }
 
 
-    public void SaveImage(string path)
-    {
+    public void SaveImage(string path) {
         Texture2D img = GetImage();
         byte[] bytes = img.EncodeToPNG();
         System.IO.File.WriteAllBytes(path, bytes);

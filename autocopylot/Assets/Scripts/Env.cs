@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PathCreation;
 
-public sealed class Env : MonoBehaviour {
-    public static Env Instance;
+public sealed class ENV : MonoBehaviour {
+    public static ENV Instance;
 
     [Header("Virtual Env Settings")]
     public bool generateWalls = true;
@@ -35,6 +36,24 @@ public sealed class Env : MonoBehaviour {
     public float turnTh = 15f;
     public bool doDrawTurns = true;
     public float[] lookupZone = { 0.4f, 0.3f, 0.2f };
+
+    [Header("PathCreators")]
+    public PathCreator RoadSpline;
+    public PathCreator TrajectorySpline;
+
+    [Header("Spline Loader")]
+    public bool RandomTrack = false;
+    public bool LoadTrack = false;
+    public bool RandomMaterial = false;
+    public int NumPoints = 10;
+    public float MinDist = 3.0f;
+    public string Name = "spline.txt";
+
+    [Header("Road Builder")]
+    public bool DoBuildRoad = true;
+    public Material undersideMaterial;
+    public float roadWidth = 0.4f;
+    public float thickness = 0.01f;
 
     private void Awake() {
         if (Instance == null) {

@@ -66,22 +66,22 @@ public class CarPath : MonoBehaviour {
     /// Initializes variable from Env
     /// </summary>
     void InitEnvVariables() {
-        RandomDist = Env.Instance.RandomDist;
-        timeLookahead = Env.Instance.timeLookahead;
-        maxAngle = Env.Instance.maxAngle;
-        minSpeed = Env.Instance.minSpeed;
-        maxSpeed = Env.Instance.maxSpeed;
-        speed = Env.Instance.speed;
-        pointsEvery = Env.Instance.pointsEvery;
-        distAverage = Env.Instance.distAverage;
-        distBrakeLookahead = Env.Instance.distBrakeLookahead;
-        turnTh = Env.Instance.turnTh;
-        doDrawTurns = Env.Instance.doDrawTurns;
-        lookupZone = Env.Instance.lookupZone;
+        RandomDist = ENV.Instance.RandomDist;
+        timeLookahead = ENV.Instance.timeLookahead;
+        maxAngle = ENV.Instance.maxAngle;
+        minSpeed = ENV.Instance.minSpeed;
+        maxSpeed = ENV.Instance.maxSpeed;
+        speed = ENV.Instance.speed;
+        pointsEvery = ENV.Instance.pointsEvery;
+        distAverage = ENV.Instance.distAverage;
+        distBrakeLookahead = ENV.Instance.distBrakeLookahead;
+        turnTh = ENV.Instance.turnTh;
+        doDrawTurns = ENV.Instance.doDrawTurns;
+        lookupZone = ENV.Instance.lookupZone;
     }
 
     /// <summary>
-    /// Initializes the car path
+    /// Initializes the car path and creates zones
     /// </summary>
     public void CreateCarPath() {
         CreateCarSpline();

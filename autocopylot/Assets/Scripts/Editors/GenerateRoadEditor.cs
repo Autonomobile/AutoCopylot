@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GenerateRoad))]
+[CustomEditor(typeof(RoadGenerator))]
 public class GenerateRoadEditor : Editor
 {
 
-    private GenerateRoad script;
+    private RoadGenerator script;
 
     private void OnEnable()
     {
-        script = (GenerateRoad)target;
+        script = (RoadGenerator)target;
     }
 
     public override void OnInspectorGUI()
@@ -25,8 +25,8 @@ public class GenerateRoadEditor : Editor
 
         if (GUILayout.Button("save path"))
         {
-            GenerateRoad.SavePath(script.RoadSpline, script.RoadSplineFolder + script.Name);
-            GenerateRoad.SavePath(script.TrajectorySpline, script.TrajectorySplineFolder + script.Name);
+            RoadGenerator.SavePath(script.RoadSpline, script.RoadSplineFolder + script.Name);
+            RoadGenerator.SavePath(script.TrajectorySpline, script.TrajectorySplineFolder + script.Name);
         }
 
         if (GUILayout.Button("load path"))
