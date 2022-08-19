@@ -6,6 +6,15 @@ using PathCreation;
 public sealed class ENV : MonoBehaviour {
     public static ENV Instance;
 
+    [Header("PathCreators")]
+    public PathCreator RoadSpline;
+    public PathCreator TrajectorySpline;
+    public RoadGenerator roadGenerator;
+    public EnvGenerator envGenerator;
+
+    public DomeController domeController;
+    public DomeProjection domeProjection;
+
     [Header("Virtual Env Settings")]
     public bool generateWalls = true;
     public bool randomizeLights = true;
@@ -36,10 +45,6 @@ public sealed class ENV : MonoBehaviour {
     public float turnTh = 15f;
     public bool doDrawTurns = true;
     public float[] lookupZone = { 0.4f, 0.3f, 0.2f };
-
-    [Header("PathCreators")]
-    public PathCreator RoadSpline;
-    public PathCreator TrajectorySpline;
 
     [Header("Spline Loader")]
     public bool RandomTrack = false;

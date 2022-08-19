@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class CameraSensor : MonoBehaviour {
@@ -16,6 +17,16 @@ public class CameraSensor : MonoBehaviour {
         texture = new Texture2D(textureWidth - 80, textureHeight - 80, TextureFormat.RGB24, false);
     }
 
+    void Update() {
+        //UpdateImageTexture();
+    }
+
+    void UpdateImageTexture() {
+        // find RawImage
+        var rawImage = GameObject.Find("RawImage");
+        rawImage.GetComponent<RawImage>().texture = GetImage();
+    }
+
     Texture2D GetImage() {
         var currentRT = RenderTexture.active;
         RenderTexture.active = renderTexture;
@@ -23,6 +34,7 @@ public class CameraSensor : MonoBehaviour {
         texture.ReadPixels(new Rect(40, 40, textureWidth - 40, textureHeight - 40), 0, 0);
 
         RenderTexture.active = currentRT;
+
         return texture;
     }
 

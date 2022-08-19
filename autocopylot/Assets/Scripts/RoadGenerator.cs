@@ -36,16 +36,16 @@ public class RoadGenerator : MonoBehaviour {
     GameObject meshHolder;
 
     public void Start() {
-        if (RoadSpline is null || TrajectorySpline is null)
-            throw new ArgumentNullException("One of the splines is null.");
+        //if (RoadSpline is null || TrajectorySpline is null)
+        //    throw new ArgumentNullException("One of the splines is null.");
 
-        if (RandomTrack) {
-            if (LoadTrack)
-                LoadRandomSplines();
-            else
-                GenerateSplines();
-        } else if (LoadTrack)
-            LoadSplines(Name);
+        //if (RandomTrack) {
+        //    if (LoadTrack)
+        //        LoadRandomSplines();
+        //    else
+        //        GenerateSplines();
+        //} else if (LoadTrack)
+        //    LoadSplines(Name);
     }
 
     #region IO

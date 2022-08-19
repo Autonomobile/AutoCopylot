@@ -7,7 +7,7 @@ using PathCreation;
 
 public class EnvGenerator : MonoBehaviour
 {
-    public string TextureFolder => "Materials/Materials/";
+    public string TextureFolder => "EnvTextures/Materials/";
     public string RoadMatFolder => "Roads/Materials/";
 
     public PathCreator RoadSpline;
@@ -60,7 +60,7 @@ public class EnvGenerator : MonoBehaviour
     public void Start()
     {
         InitEnvVariables();
-        GenerateVirtualEnv();
+        //GenerateVirtualEnv();
     }
 
     public void GenerateVirtualEnv()

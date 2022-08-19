@@ -46,8 +46,8 @@ public class Car : MonoBehaviour {
                 System.IO.Directory.CreateDirectory(saveFolder);
         }
 
-        carPath.Start();
-        Randomize();
+        //carPath.Start();
+        //Randomize();
     }
 
     public void Randomize() {
@@ -64,7 +64,7 @@ public class Car : MonoBehaviour {
     void Update() {
         // this is used to prevent the script to generate black images
         // for the first skipUpdate Unity update calls
-        if (skipUpdate > 0) {
+        if (skipUpdate > 0 || true) {
             skipUpdate--;
             return;
         }

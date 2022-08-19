@@ -59,7 +59,7 @@ public class CarPath : MonoBehaviour {
             throw new ArgumentNullException("RoadSpline, TrajectorySpline or CarSpline is null");
 
         InitEnvVariables();
-        CreateCarPath();
+        //CreateCarPath();
     }
 
     /// <summary>

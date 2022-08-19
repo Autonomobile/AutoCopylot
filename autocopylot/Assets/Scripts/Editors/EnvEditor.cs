@@ -17,12 +17,15 @@ public class EnvEditor : Editor
     {
         base.OnInspectorGUI();
 
-        if (GUILayout.Button("Generate ENV"))
+        if (GUILayout.Button("generate env"))
         {
+            script.envGenerator.GenerateVirtualEnv();
         }
 
-        if (GUILayout.Button("Reset ENV"))
+        if (GUILayout.Button("reset env"))
         {
+            script.envGenerator.ResetEnv();
         }
+
     }
 }
