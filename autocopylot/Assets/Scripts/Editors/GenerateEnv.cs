@@ -21,5 +21,10 @@ public class GenerateEnvEditor : Editor
         {
             script.Start();
         }
+
+        if (GUILayout.Button("reset env"))
+        {
+            script.ResetEnv();
+        }
     }
 }

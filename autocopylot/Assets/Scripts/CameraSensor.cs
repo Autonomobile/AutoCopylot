@@ -7,15 +7,15 @@ using System;
 public class CameraSensor : MonoBehaviour
 {
     public RenderTexture renderTexture;
-    Texture2D tex;
-    int texwidth;
-    int texheight;
+    Texture2D texture;
+    int textureWidth;
+    int textureHeight;
 
     void Start()
     {
-        texwidth = renderTexture.width;
-        texheight = renderTexture.height;
-        tex = new Texture2D(texwidth - 80, texheight - 80, TextureFormat.RGB24, false);
+        textureWidth = renderTexture.width;
+        textureHeight = renderTexture.height;
+        texture = new Texture2D(textureWidth - 80, textureHeight - 80, TextureFormat.RGB24, false);
     }
 
     Texture2D GetImage()
@@ -23,10 +23,10 @@ public class CameraSensor : MonoBehaviour
         var currentRT = RenderTexture.active;
         RenderTexture.active = renderTexture;
 
-        tex.ReadPixels(new Rect(40, 40, texwidth - 40, texheight - 40), 0, 0);
+        texture.ReadPixels(new Rect(40, 40, textureWidth - 40, textureHeight - 40), 0, 0);
 
         RenderTexture.active = currentRT;
-        return tex;
+        return texture;
     }
 
 
