@@ -164,10 +164,10 @@ public class DomeController : MonoBehaviour
         if (m_worldCamera == null)
             Debug.LogError(WorldCameraMissingError);
 
-		if (fpsText != null)
-		{
-			fpsText.gameObject.SetActive(false);
-		}
+		//if (fpsText != null)
+		//{
+		//	fpsText.gameObject.SetActive(false);
+		//}
 
 		// Save initial pitch and roll.
 		m_initialWorldCameraPitch = worldCameraPitch;
