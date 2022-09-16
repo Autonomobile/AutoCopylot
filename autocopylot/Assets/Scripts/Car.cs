@@ -50,8 +50,17 @@ public class Car : MonoBehaviour
         counter += timesteps;
         if (counter > RandomizeEvery)
         {
+            Vector3 pos = transform.position;
             Randomize();
+
+            // get time from position
+            t = carPath.CarSpline.path.GetClosestTimeOnPath(pos);
+            carPath.t = t;
+            carPath.prevDist = carPath.CarSpline.path.GetClosestDistanceAlongPath(pos);
+
+            t += timesteps;
             carPath.UpdateTransform(t);
+
             counter = 0.0f;
         }
         else

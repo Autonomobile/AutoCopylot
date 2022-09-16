@@ -134,7 +134,7 @@ public class GenerateRoad : MonoBehaviour
 
     private void PathUpdated()
     {
-        if (DoBuildRoad && RoadSpline != null)
+        if (DoBuildRoad)
         {
             AssignMeshComponents();
             AssignMaterials();

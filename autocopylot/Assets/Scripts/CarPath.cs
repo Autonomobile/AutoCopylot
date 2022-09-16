@@ -50,37 +50,69 @@ public class CarPath : MonoBehaviour
     public float turnTh = 20f;
     public bool doDrawTurns = true;
 
-    private float t = 0.0f;
+    public float t = 0.0f;
     private float dt = 0.0f;
-    private float prevDist = 0.0f;
+    public float prevDist = 0.0f;
     private int laneRes = 10;
     private float laneDist = 2.0f;
 
     private (float, Vector3)[] zones;
     private float[] averagedAngles;
 
+    public int numObstacles = 1;
+    private (int, Vector3)[] previous_offsets;
+
 
     public void Start()
     {
         if (RoadSpline == null || TrajectorySpline == null || CarSpline == null)
             throw new ArgumentNullException("RoadSpline, TrajectorySpline or CarSpline is null");
+        
+        if (previous_offsets == null)
+            previous_offsets = new (int, Vector3)[numObstacles];
 
+        CreateObstacles();
         CreateCarSpline();
         CreateZone();
+    }
+    public void CreateObstacles()
+    {
+
+        foreach ((int index, Vector3 prevoffset) in previous_offsets)
+        {
+            TrajectorySpline.bezierPath.SetPoint(index, TrajectorySpline.bezierPath.GetPoint(index) - prevoffset);
+        }
+
+        for (int i = 0; i < numObstacles; i++)
+        {
+            // Offset a random point to insert an obstacle on the road
+            int randomPoint = UnityEngine.Random.Range(0, TrajectorySpline.bezierPath.NumSegments) * 3;
+            float offset = UnityEngine.Random.Range(0.3f, 0.5f);
+            bool sign = UnityEngine.Random.Range(0, 2) == 0 ? true : false;
+            if (sign)
+                offset = -offset;
+                
+            Vector3 point = TrajectorySpline.bezierPath.GetPoint(randomPoint);
+            Vector3 normal = TrajectorySpline.path.GetNormalAtDistance(TrajectorySpline.path.GetClosestDistanceAlongPath(point));
+            Vector3 offsetPoint = offset * normal;
+            previous_offsets[i] = (randomPoint, offsetPoint);
+            TrajectorySpline.bezierPath.MovePoint(randomPoint, point + offsetPoint);
+        }
     }
 
     public void CreateCarSpline()
     {
         int step = 6;
-        int numPoints = RoadSpline.path.NumPoints / step;
+        int numPoints = TrajectorySpline.path.NumPoints / step;
         Vector3[] points = new Vector3[numPoints];
         for (int i = 0; i < points.Length; i++)
         {
-            points[i] = RoadSpline.path.GetPoint(i * step) - RoadSpline.transform.position + RoadSpline.path.GetNormal(i) * UnityEngine.Random.Range(-RandomDist, RandomDist);
+            points[i] = TrajectorySpline.path.GetPoint(i * step) - TrajectorySpline.transform.position + TrajectorySpline.path.GetNormal(i) * UnityEngine.Random.Range(-RandomDist, RandomDist);
             points[i] += Vector3.up * UnityEngine.Random.Range(minSpeed, maxSpeed);
         }
         BezierPath bezierPath = new BezierPath(points, true, PathSpace.xyz);
         CarSpline.bezierPath = bezierPath;
+        // TODO do the same with
     }
 
     public void CreateZone()
@@ -159,7 +191,7 @@ public class CarPath : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(diff);
 
         speed = (v1.y + v2.y) / 2.0f;
-        prevDist = dist; ;
+        prevDist = dist;
         this.t = t;
     }
 
@@ -275,13 +307,12 @@ public class CarPath : MonoBehaviour
                 if (averagedAngles[i] > turnTh)
                     Gizmos.DrawSphere(RoadSpline.path.GetPointAtDistance(i * pointsEvery), averagedAngles[i] / 180.0f);
             }
-        }
 
-        Vector3[] trajectory = GetTrajectory();
-        foreach (Vector3 trajectoryPoint in trajectory)
-        {
-            Gizmos.DrawSphere(trajectoryPoint + pos, 0.1f);
-            // Debug.Log(trajectoryPoint);
+            Vector3[] trajectory = GetTrajectory();
+            foreach (Vector3 trajectoryPoint in trajectory)
+            {
+                Gizmos.DrawSphere(trajectoryPoint + pos, 0.1f);
+            }
         }
     }
 }
