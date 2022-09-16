@@ -361,7 +361,7 @@ namespace PathCreation {
                 points[i] = pointPos;
 
                 if (controlMode == ControlMode.Automatic) {
-                    AutoSetAllAffectedControlPoints (i);
+                    AutoSetAllControlPoints();
                 } else {
                     // Move control points with anchor point
                     if (isAnchorPoint) {
