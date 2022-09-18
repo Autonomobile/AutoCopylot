@@ -71,4 +71,31 @@ public sealed class ENV : MonoBehaviour {
     public void Init() {
         Debug.Log("Env Init");
     }
+
+    public void SliderCameraFOV(float value) {
+        int fov = (int) value;
+        GameObject.Find("FOV Text Value").GetComponent<UnityEngine.UI.Text>().text = fov.ToString();
+        domeController.FOV = fov;
+    }
+
+    public void SliderCameraXRotation(float value) {
+        int val = (int) value;
+        GameObject.Find("X Text Value").GetComponent<UnityEngine.UI.Text>().text = val.ToString();
+        domeController.GetComponent<Transform>().rotation = Quaternion.Euler(val - 33, 0, 0);
+    }
+
+    public void SliderCameraYTranslation(float value) {
+        int val = (int) value;
+        GameObject.Find("Y Text Value").GetComponent<UnityEngine.UI.Text>().text = val.ToString();
+        Vector3 pos = domeController.GetComponent<Transform>().position;
+        domeController.GetComponent<Transform>().position = new Vector3(pos.x, val / 100.0f, pos.z);
+    }
+
+
+    public void SliderCameraZTranslation(float value) {
+        int val = (int) value;
+        GameObject.Find("Z Text Value").GetComponent<UnityEngine.UI.Text>().text = val.ToString();
+        Vector3 pos = domeController.GetComponent<Transform>().position;
+        domeController.GetComponent<Transform>().position = new Vector3(pos.x, pos.y, val / 100.0f);
+    }
 }

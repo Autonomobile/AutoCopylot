@@ -12,8 +12,6 @@ public class CameraSensor : MonoBehaviour {
     int textureWidth;
     int textureHeight;
 
-    private string homeFolder => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
     void Start() {
         textureWidth = renderTexture.width;
         textureHeight = renderTexture.height;
@@ -34,19 +32,6 @@ public class CameraSensor : MonoBehaviour {
         ui_texture.Apply();
 
         rawImg.texture = ui_texture;
-        //SaveImage(homeFolder + "/collect/test/image.png");
-    }
-
-
-    Texture2D RedTexture() {
-        Texture2D camera_texture = GetCameraView();
-        Texture2D ui_texture = new Texture2D(camera_texture.width, camera_texture.height, TextureFormat.RGB24, false);
-
-        ui_texture.SetPixels(camera_texture.GetPixels());
-        ui_texture.Apply();
-
-        return ui_texture;
-        
     }
 
     Texture2D GetCameraView() {

@@ -164,13 +164,14 @@ public class DomeController : MonoBehaviour
         if (m_worldCamera == null)
             Debug.LogError(WorldCameraMissingError);
 
-		//if (fpsText != null)
-		//{
-		//	fpsText.gameObject.SetActive(false);
-		//}
+        // I don't know why the developer used this beacause it prevent using fpsText in the editor.
+        //if (fpsText != null)
+        //{
+        //	fpsText.gameObject.SetActive(false);
+        //}
 
-		// Save initial pitch and roll.
-		m_initialWorldCameraPitch = worldCameraPitch;
+        // Save initial pitch and roll.
+        m_initialWorldCameraPitch = worldCameraPitch;
 		m_initialWorldCameraRoll = worldCameraRoll;
 
 		if (doLoadSettingsFromFile)
